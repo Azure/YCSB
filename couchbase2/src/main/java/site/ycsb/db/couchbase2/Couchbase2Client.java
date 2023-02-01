@@ -264,7 +264,7 @@ public class Couchbase2Client extends DB {
    * @return The result of the operation.
    */
   private Status readKv(final String docId, final Set<String> fields, final Map<String, ByteIterator> result)
-    throws Exception {
+      throws Exception {
     RawJsonDocument loaded = bucket.get(docId, RawJsonDocument.class);
     if (loaded == null) {
       return Status.NOT_FOUND;
@@ -284,7 +284,7 @@ public class Couchbase2Client extends DB {
    * @return The result of the operation.
    */
   private Status readN1ql(final String docId, Set<String> fields, final Map<String, ByteIterator> result)
-    throws Exception {
+      throws Exception {
     String readQuery = "SELECT " + joinFields(fields) + " FROM `" + bucketName + "` USE KEYS [$1]";
     N1qlQueryResult queryResult = bucket.query(N1qlQuery.parameterized(
         readQuery,
@@ -362,8 +362,7 @@ public class Couchbase2Client extends DB {
    * @param values the values to update the document with.
    * @return The result of the operation.
    */
-  private Status updateN1ql(final String docId, final Map<String, ByteIterator> values)
-    throws Exception {
+  private Status updateN1ql(final String docId, final Map<String, ByteIterator> values) throws Exception {
     String fields = encodeN1qlFields(values);
     String updateQuery = "UPDATE `" + bucketName + "` USE KEYS [$1] SET " + fields;
 
@@ -443,8 +442,7 @@ public class Couchbase2Client extends DB {
    * @param values the values to update the document with.
    * @return The result of the operation.
    */
-  private Status insertN1ql(final String docId, final Map<String, ByteIterator> values)
-    throws Exception {
+  private Status insertN1ql(final String docId, final Map<String, ByteIterator> values) throws Exception {
     String insertQuery = "INSERT INTO `" + bucketName + "`(KEY,VALUE) VALUES ($1,$2)";
 
     N1qlQueryResult queryResult = bucket.query(N1qlQuery.parameterized(
@@ -511,8 +509,7 @@ public class Couchbase2Client extends DB {
    * @param values the values to update the document with.
    * @return The result of the operation.
    */
-  private Status upsertN1ql(final String docId, final Map<String, ByteIterator> values)
-    throws Exception {
+  private Status upsertN1ql(final String docId, final Map<String, ByteIterator> values) throws Exception {
     String upsertQuery = "UPSERT INTO `" + bucketName + "`(KEY,VALUE) VALUES ($1,$2)";
 
     N1qlQueryResult queryResult = bucket.query(N1qlQuery.parameterized(

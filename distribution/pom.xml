@@ -179,11 +179,13 @@ LICENSE file.
       <artifactId>maprjsondb-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>mongodb-binding</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency
+    -->
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>nosqldb-binding</artifactId>
@@ -266,12 +268,13 @@ LICENSE file.
     </dependency>
 
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>${maven.assembly.version}</version>
+        <version>${maven.assembly-plugin.version}</version>
         <configuration>
           <descriptors>
             <descriptor>src/main/assembly/distribution.xml</descriptor>

@@ -121,7 +121,6 @@
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.12</version>
         <configuration>
           <excludes>
             <exclude>src/test/resources/error_trace.txt</exclude>

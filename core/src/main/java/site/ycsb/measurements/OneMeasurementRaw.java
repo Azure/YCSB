@@ -42,7 +42,7 @@ public class OneMeasurementRaw extends OneMeasurement {
     private final long timestamp;
     private final int value;
 
-    public RawDataPoint(int value) {
+    RawDataPoint(int value) {
       this.timestamp = System.currentTimeMillis();
       this.value = value;
     }
