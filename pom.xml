@@ -152,7 +152,7 @@ LICENSE file.
     <!-- datastore binding versions, lex sorted -->
     <accumulo.1.9.version>1.9.3</accumulo.1.9.version>
     <accumulo.1.10.version>1.10.2</accumulo.1.10.version>
-    <aerospike.version>3.1.2</aerospike.version>
+    <aerospike.version>6.1.6</aerospike.version>
     <arangodb.version>4.4.1</arangodb.version>
     <asynchbase.version>1.8.2</asynchbase.version>
     <azurecosmos.version>4.41.0</azurecosmos.version>
