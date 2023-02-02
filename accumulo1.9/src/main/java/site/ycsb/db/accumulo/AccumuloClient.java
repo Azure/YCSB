@@ -84,6 +84,7 @@ public class AccumuloClient extends DB {
     colFam = new Text(getProperties().getProperty("accumulo.columnFamily"));
     colFamBytes = colFam.toString().getBytes(UTF_8);
 
+    // TODO ClientConfiguration() is deprecated.
     inst = new ZooKeeperInstance(new ClientConfiguration()
         .withInstance(getProperties().getProperty("accumulo.instanceName"))
         .withZkHosts(getProperties().getProperty("accumulo.zooKeepers")));
