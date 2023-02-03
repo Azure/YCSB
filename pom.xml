@@ -160,7 +160,7 @@ LICENSE file.
     <!-- TODO Move to 4.0.x -->
     <cassandra.cql.version>3.0.0</cassandra.cql.version>
     <cloudspanner.version>6.35.2</cloudspanner.version>
-    <couchbase.version>1.4.10</couchbase.version>
+    <couchbase.version>1.4.13</couchbase.version>
     <couchbase2.version>2.3.1</couchbase2.version>
     <crail.version>1.1-incubating</crail.version>
     <elasticsearch5-version>5.5.1</elasticsearch5-version>
