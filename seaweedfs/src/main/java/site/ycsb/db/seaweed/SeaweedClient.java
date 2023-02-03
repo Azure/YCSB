@@ -32,6 +32,7 @@ import site.ycsb.StringByteIterator;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.HashMap;
@@ -208,7 +209,10 @@ public class SeaweedClient extends DB {
                               .setFileMode(0755)
               );
 
-      SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
+      // SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
+      SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0,
+          jsonData.length, this.folder + "/" + tableName);
+      // SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
 
       SeaweedWrite.writeMeta(this.filerGrpcClient, this.folder + "/" + tableName, entry);
 
@@ -250,7 +254,7 @@ public class SeaweedClient extends DB {
         SeaweedRead.nonOverlappingVisibleIntervals(filerGrpcClient, entry.getChunksList());
     int length = (int) SeaweedRead.totalSize(entry.getChunksList());
     byte[] buffer = new byte[length];
-    SeaweedRead.read(this.filerGrpcClient, visibleIntervalList, 0, buffer, 0, buffer.length);
+    SeaweedRead.read(this.filerGrpcClient, visibleIntervalList, 0, ByteBuffer.wrap(buffer), 0);
     fromJson(new String(buffer, StandardCharsets.UTF_8), fields, result);
   }
 
