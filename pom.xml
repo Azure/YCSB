@@ -193,7 +193,8 @@ LICENSE file.
     <!-- Could add Solr 8 & 9 later -->
     <solr7.version>7.7.3</solr7.version>
     <tablestore.version>5.13.13</tablestore.version>
-    <tarantool.version>1.6.5</tarantool.version>
+    <!-- update to 1.7.0+ needs refactoring -->
+    <tarantool.version>1.6.9</tarantool.version>
     <thrift.version>0.8.0</thrift.version>
     <voltdb.version>10.1.1</voltdb.version>
     <zookeeper.version>3.5.8</zookeeper.version>
