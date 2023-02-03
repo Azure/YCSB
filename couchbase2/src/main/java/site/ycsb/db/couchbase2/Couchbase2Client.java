@@ -18,6 +18,8 @@
 package site.ycsb.db.couchbase2;
 
 import com.couchbase.client.core.env.DefaultCoreEnvironment;
+import com.couchbase.client.core.env.KeyValueServiceConfig;
+import com.couchbase.client.core.env.QueryServiceConfig;
 import com.couchbase.client.core.env.resources.IoPoolShutdownHook;
 import com.couchbase.client.core.logging.CouchbaseLogger;
 import com.couchbase.client.core.logging.CouchbaseLoggerFactory;
@@ -51,7 +53,7 @@ import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import com.couchbase.client.java.error.TemporaryFailureException;
 import com.couchbase.client.java.query.*;
 import com.couchbase.client.java.transcoder.JacksonTransformers;
-import com.couchbase.client.java.util.Blocking;
+import com.couchbase.client.core.utils.Blocking;
 import site.ycsb.ByteIterator;
 import site.ycsb.DB;
 import site.ycsb.DBException;
@@ -174,14 +176,14 @@ public class Couchbase2Client extends DB {
 
           DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment
               .builder()
-              .queryEndpoints(queryEndpoints)
+              .queryServiceConfig(QueryServiceConfig.create(queryEndpoints, queryEndpoints))
               .callbacksOnIoPool(true)
               .runtimeMetricsCollectorConfig(runtimeConfig)
               .networkLatencyMetricsCollectorConfig(latencyConfig)
               .socketConnectTimeout(10000) // 10 secs socket connect timeout
               .connectTimeout(30000) // 30 secs overall bucket open timeout
               .kvTimeout(10000) // 10 instead of 2.5s for KV ops
-              .kvEndpoints(kvEndpoints);
+              .keyValueServiceConfig(KeyValueServiceConfig.create(kvEndpoints));
 
           // Tune boosting and epoll based on settings
           SelectStrategyFactory factory = boost > 0 ?
