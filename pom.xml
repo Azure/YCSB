@@ -182,6 +182,7 @@ LICENSE file.
     <mongodb.async.version>2.0.1</mongodb.async.version>
     <openjpa.jdbc.version>3.2.2</openjpa.jdbc.version>
     <orientdb.version>3.2.15</orientdb.version>
+    <!-- Above this version needs refactoring of the client -->
     <redis.version>2.9.0</redis.version>
     <riak.version>2.0.5</riak.version>
     <rocksdb.version>6.2.2</rocksdb.version>
