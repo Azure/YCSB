@@ -43,6 +43,14 @@ LICENSE file.
       <artifactId>cassandra-driver-core</artifactId>
       <version>${cassandra.cql.version}</version>
     </dependency>
+    <!-- Swap to this when moving to 4.0.x -->
+    <!--
+    <dependency>
+      <groupId>com.datastax.oss</groupId>
+      <artifactId>java-driver-core</artifactId>
+      <version>${cassandra.cql.version}</version>
+    </dependency>
+    -->
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>core</artifactId>
@@ -59,20 +67,20 @@ LICENSE file.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.21</version>
+      <version>2.0.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
     <!-- only for Cassandra test (Cassandra 2.2+ uses Sigar for collecting system information, and Sigar requires some native lib files) -->
 	  <dependency>
 	    <groupId>org.hyperic</groupId>
 	    <artifactId>sigar-dist</artifactId>
-	    <version>1.6.4.129</version>
+	    <version>1.6.5.132-6</version>
 	    <type>zip</type>
 	    <scope>test</scope>
 	  </dependency>
@@ -93,22 +101,23 @@ LICENSE file.
     </profile>
   </profiles>
   <!-- sigar-dist can be downloaded from jboss repository -->
-	<repositories>
-		<repository>
-			<id>central2</id>
-			<name>sigar Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<!-- unzip sigar-dist/lib files. 
-		References: 
-		http://stackoverflow.com/questions/5388661/unzip-dependency-in-maven 
-		https://arviarya.wordpress.com/2013/09/22/sigar-access-operating-system-and-hardware-level-information/
-	 -->
+  <!-- <url>https://maven.repository.redhat.com/ga/</url> -->
+  <repositories>
+    <repository>
+      <id>central2</id>
+      <name>sigar Repository</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <!-- unzip sigar-dist/lib files.
+  References:
+    http://stackoverflow.com/questions/5388661/unzip-dependency-in-maven
+    https://arviarya.wordpress.com/2013/09/22/sigar-access-operating-system-and-hardware-level-information/
+  -->
  	<build>
 	 	<plugins>
 	 		<plugin>
@@ -117,7 +126,8 @@ LICENSE file.
 			    <executions>
 			      <execution>
 			        <id>unpack-sigar</id>
-			        <phase>process-test-resources<!-- or any other valid maven phase --></phase>
+              <!-- or any other valid maven phase -->
+			        <phase>process-test-resources</phase>
 			        <goals>
 			          <goal>unpack-dependencies</goal>
 			        </goals>
@@ -140,7 +150,6 @@ LICENSE file.
 			    <argLine>-Djava.library.path=${project.build.directory}/cassandra-dependency/hyperic-sigar-1.6.4/sigar-bin/lib</argLine>
 			  </configuration>
 			</plugin>
-			
 	 	</plugins>
  	</build>
 </project>
