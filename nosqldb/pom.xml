@@ -33,7 +33,7 @@ LICENSE file.
     <dependency>
       <groupId>com.oracle.kv</groupId>
       <artifactId>oracle-nosql-client</artifactId>
-      <version>3.0.5</version>
+      <version>18.3.10</version>
     </dependency>
     <dependency>
       <groupId>site.ycsb</groupId>
