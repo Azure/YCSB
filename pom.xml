@@ -190,7 +190,8 @@ LICENSE file.
     <scylla.cql.version>3.11.2.4</scylla.cql.version>
     <!-- needs further upgrades but difficult to track -->
     <seaweed.client.version>1.6.0</seaweed.client.version>
-    <solr7.version>7.7.2</solr7.version>
+    <!-- Could add Solr 8 & 9 later -->
+    <solr7.version>7.7.3</solr7.version>
     <tarantool.version>1.6.5</tarantool.version>
     <thrift.version>0.8.0</thrift.version>
     <tablestore.version>4.8.0</tablestore.version>
