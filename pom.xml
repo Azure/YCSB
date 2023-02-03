@@ -170,7 +170,7 @@ LICENSE file.
     <geode.version>1.15.1</geode.version>
     <!-- TODO move to 2.7.1 one day -->
     <googlebigtable.version>1.28.0</googlebigtable.version>
-    <griddb.version>4.0.0</griddb.version>
+    <griddb.version>5.1.0</griddb.version>
     <hbase1.version>1.7.2</hbase1.version>
     <hbase2.version>2.2.3</hbase2.version>
     <ignite.version>2.7.6</ignite.version>
