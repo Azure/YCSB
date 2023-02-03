@@ -29,15 +29,14 @@ LICENSE file.
     <name>Elasticsearch Binding</name>
     <packaging>jar</packaging>
     <properties>
-        <elasticsearch-version>2.4.0</elasticsearch-version>
+        <elasticsearch-version>2.4.6</elasticsearch-version>
     </properties>
     <dependencies>
-        <dependency>
-        <!-- jna is supported in ES and will be used when provided 
-             otherwise a fallback is used -->    
+      <!-- jna is supported in ES and will be used when provided otherwise a fallback is used -->
+      <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>4.1.0</version>
+            <version>5.13.0</version>
         </dependency>
         <dependency>
             <groupId>site.ycsb</groupId>
@@ -53,7 +52,7 @@ LICENSE file.
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
