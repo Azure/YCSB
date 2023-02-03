@@ -157,7 +157,7 @@ LICENSE file.
     <asynchbase.version>1.8.2</asynchbase.version>
     <azurecosmos.version>4.41.0</azurecosmos.version>
     <azurestorage.version>8.6.6</azurestorage.version>
-    <!-- TODO Move to 4.0.x -->
+    <!-- Move to 4.0.x requires refactoring -->
     <cassandra.cql.version>3.0.0</cassandra.cql.version>
     <cloudspanner.version>6.35.2</cloudspanner.version>
     <couchbase.version>1.4.13</couchbase.version>
@@ -168,14 +168,15 @@ LICENSE file.
     <elasticsearch5-version>5.6.16</elasticsearch5-version>
     <foundationdb.version>7.2.3</foundationdb.version>
     <geode.version>1.15.1</geode.version>
-    <!-- TODO move to 2.7.1 one day -->
+    <!-- 2.7.1+ requires refactoring -->
     <googlebigtable.version>1.28.0</googlebigtable.version>
     <griddb.version>5.1.0</griddb.version>
     <hbase1.version>1.7.2</hbase1.version>
     <hbase2.version>2.5.2</hbase2.version>
     <ignite.version>2.14.0</ignite.version>
-    <infinispan.version>7.2.2.Final</infinispan.version>
-    <kudu.version>1.11.1</kudu.version>
+    <!-- At 9.x+ The Remote Manager code changes and requires refactoring -->
+    <infinispan.version>8.2.12.Final</infinispan.version>
+    <kudu.version>1.16.0</kudu.version>
     <maprhbase.version>1.1.8-mapr-1710</maprhbase.version>
     <mongodb.version>3.11.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
