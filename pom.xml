@@ -166,7 +166,7 @@ LICENSE file.
     <crail.version>1.1-incubating</crail.version>
     <elasticsearch2-version>2.4.6</elasticsearch2-version>
     <elasticsearch5-version>5.6.16</elasticsearch5-version>
-    <foundationdb.version>5.2.5</foundationdb.version>
+    <foundationdb.version>7.2.3</foundationdb.version>
     <geode.version>1.2.0</geode.version>
     <googlebigtable.version>1.4.0</googlebigtable.version>
     <griddb.version>4.0.0</griddb.version>
