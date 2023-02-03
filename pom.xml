@@ -177,7 +177,7 @@ LICENSE file.
     <!-- At 9.x+ The Remote Manager code changes and requires refactoring -->
     <infinispan.version>8.2.12.Final</infinispan.version>
     <kudu.version>1.16.0</kudu.version>
-    <maprhbase.version>1.1.8-mapr-1710</maprhbase.version>
+    <maprhbase.version>1.7.2</maprhbase.version>
     <mongodb.version>3.11.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
     <!--<openjpa.jdbc.version>2.1.1</openjpa.jdbc.version>-->
