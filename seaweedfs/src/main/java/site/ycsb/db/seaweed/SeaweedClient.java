@@ -18,6 +18,11 @@
  */
 package site.ycsb.db.seaweed;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import seaweedfs.client.FilerProto;
 import seaweedfs.client.FilerClient;
 import seaweedfs.client.FilerGrpcClient;
@@ -41,11 +46,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -292,7 +292,7 @@ public class SeaweedClient extends DB {
           Map<String, ByteIterator> result) throws IOException {
     JsonNode json = MAPPER.readTree(value);
     boolean checkFields = fields != null && !fields.isEmpty();
-    for (Iterator<Map.Entry<String, JsonNode>> jsonFields = json.getFields();
+    for (Iterator<Map.Entry<String, JsonNode>> jsonFields = json.fields();
          jsonFields.hasNext();
       /* increment in loop body */) {
       Map.Entry<String, JsonNode> jsonField = jsonFields.next();
