@@ -35,7 +35,7 @@ LICENSE file.
     <dependency>
       <groupId>com.basho.riak</groupId>
       <artifactId>riak-client</artifactId>
-      <version>2.1.1</version>
+      <version>${riak.version}</version>
     </dependency>
     <dependency>
       <groupId>site.ycsb</groupId>
