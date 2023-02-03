@@ -192,9 +192,9 @@ LICENSE file.
     <seaweed.client.version>1.6.0</seaweed.client.version>
     <!-- Could add Solr 8 & 9 later -->
     <solr7.version>7.7.3</solr7.version>
+    <tablestore.version>5.13.13</tablestore.version>
     <tarantool.version>1.6.5</tarantool.version>
     <thrift.version>0.8.0</thrift.version>
-    <tablestore.version>4.8.0</tablestore.version>
     <voltdb.version>10.1.1</voltdb.version>
     <zookeeper.version>3.5.8</zookeeper.version>
   </properties>
