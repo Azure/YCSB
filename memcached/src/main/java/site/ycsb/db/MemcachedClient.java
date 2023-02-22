@@ -50,7 +50,8 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -59,7 +60,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class MemcachedClient extends DB {
 
-  private final Logger logger = Logger.getLogger(getClass());
+  private static final Logger LOGGER = LogManager.getLogger();
 
   protected static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -109,7 +110,7 @@ public class MemcachedClient extends DB {
   private net.spy.memcached.MemcachedClient client;
 
   /**
-   * @returns Underlying Memcached protocol client, implemented by
+   * @return Underlying Memcached protocol client, implemented by
    *     SpyMemcached.
    */
   protected net.spy.memcached.MemcachedClient memcachedClient() {
@@ -161,7 +162,7 @@ public class MemcachedClient extends DB {
     // when dealing with IPv6 addresses.
     //
     // TODO(mbrukman): fix this.
-    List<InetSocketAddress> addresses = new ArrayList<InetSocketAddress>();
+    List<InetSocketAddress> addresses = new ArrayList<>();
     String[] hosts = getProperties().getProperty(HOSTS_PROPERTY).split(",");
     for (String address : hosts) {
       int colon = address.indexOf(":");
@@ -190,7 +191,7 @@ public class MemcachedClient extends DB {
       }
       return Status.OK;
     } catch (Exception e) {
-      logger.error("Error encountered for key: " + key, e);
+      LOGGER.error("Error encountered for key: " + key, e);
       return Status.ERROR;
     }
   }
@@ -211,7 +212,7 @@ public class MemcachedClient extends DB {
           memcachedClient().replace(key, objectExpirationTime, toJson(values));
       return getReturnCode(future);
     } catch (Exception e) {
-      logger.error("Error updating value with key: " + key, e);
+      LOGGER.error("Error updating value with key: " + key, e);
       return Status.ERROR;
     }
   }
@@ -225,7 +226,7 @@ public class MemcachedClient extends DB {
           memcachedClient().add(key, objectExpirationTime, toJson(values));
       return getReturnCode(future);
     } catch (Exception e) {
-      logger.error("Error inserting value", e);
+      LOGGER.error("Error inserting value", e);
       return Status.ERROR;
     }
   }
@@ -237,7 +238,7 @@ public class MemcachedClient extends DB {
       OperationFuture<Boolean> future = memcachedClient().delete(key);
       return getReturnCode(future);
     } catch (Exception e) {
-      logger.error("Error deleting value", e);
+      LOGGER.error("Error deleting value", e);
       return Status.ERROR;
     }
   }

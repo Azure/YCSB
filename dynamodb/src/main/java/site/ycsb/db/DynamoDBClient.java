@@ -25,8 +25,8 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.*;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import site.ycsb.*;
 
 import java.io.File;
@@ -68,7 +68,7 @@ public class DynamoDBClient extends DB {
   private String region = "us-east-1";
   private String endpoint = null;
   private int maxConnects = 50;
-  private static final Logger LOGGER = Logger.getLogger(DynamoDBClient.class);
+  private static final Logger LOGGER = LogManager.getLogger();
   private static final Status CLIENT_ERROR = new Status("CLIENT_ERROR", "An error occurred on the client.");
   private static final String DEFAULT_HASH_KEY_VALUE = "YCSB_0";
 
@@ -77,7 +77,7 @@ public class DynamoDBClient extends DB {
     String debug = getProperties().getProperty("dynamodb.debug", null);
 
     if (null != debug && "true".equalsIgnoreCase(debug)) {
-      LOGGER.setLevel(Level.DEBUG);
+      LOGGER.atDebug();
     }
 
     String configuredEndpoint = getProperties().getProperty("dynamodb.endpoint", null);
@@ -147,7 +147,7 @@ public class DynamoDBClient extends DB {
           .withCredentials(new AWSStaticCredentialsProvider(new PropertiesCredentials(new File(credentialsFile))))
           .build();
       primaryKeyName = primaryKey;
-      LOGGER.info("dynamodb connection created with " + this.endpoint);
+      LOGGER.debug("dynamodb connection created with " + this.endpoint);
     } catch (Exception e1) {
       LOGGER.error("DynamoDBClient.init(): Could not initialize DynamoDB client.", e1);
     }
