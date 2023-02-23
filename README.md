@@ -5,7 +5,7 @@ upstream YCSB team to get these changes merged into the main repository.
 
 This fork contains the following updates to Cosmos DB binding:
 
-- Cosmos DB Java SDK 4.28.0
+- Cosmos DB Java SDK 4.41.0
 - Upgrade to Log4J 2
 - Client diagnostic and exception logging to separate files
 - Micrometer integration
