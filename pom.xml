@@ -208,8 +208,8 @@ LICENSE file.
     <module>distribution</module>
 
     <!-- all the datastore bindings, lex sorted please -->
-    <module>accumulo1.9</module>
-    <module>accumulo1.10</module>
+    <!-- <module>accumulo1.9</module> -->
+    <!-- <module>accumulo1.10</module> -->
     <module>aerospike</module>
     <module>arangodb</module>
     <module>asynchbase</module>
@@ -230,7 +230,7 @@ LICENSE file.
     <module>griddb</module>
     <module>hbase1</module>
     <module>hbase2</module>
-    <module>ignite</module>
+    <!-- <module>ignite</module> -->
     <module>infinispan</module>
     <module>jdbc</module>
     <module>kudu</module>
@@ -239,17 +239,17 @@ LICENSE file.
     <module>memcached</module>
     <!-- <module>mongodb</module> -->
     <module>nosqldb</module>
-    <module>orientdb</module>
+    <!-- <module>orientdb</module> -->
     <module>postgrenosql</module>
     <module>rados</module>
     <module>redis</module>
-    <module>rest</module>
-    <module>riak</module>
+    <!-- <module>rest</module> -->
+    <!-- <module>riak</module> -->
     <module>rocksdb</module>
     <module>s3</module>
     <module>seaweedfs</module>
     <module>scylla</module>
-    <module>solr7</module>
+    <!-- <module>solr7</module> -->
     <module>tarantool</module>
     <module>tablestore</module>
     <module>voltdb</module>
