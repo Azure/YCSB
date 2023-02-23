@@ -32,6 +32,13 @@ LICENSE file.
       <groupId>com.github.chrislusf</groupId>
       <artifactId>seaweedfs-client</artifactId>
       <version>${seaweed.client.version}</version>
+      <exclusions>
+        <!-- Had to exclude this due to a version range conflict -->
+        <exclusion>
+          <groupId>io.grpc</groupId>
+          <artifactId>grpc-netty-shaded</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>site.ycsb</groupId>
