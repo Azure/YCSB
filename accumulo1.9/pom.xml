@@ -118,7 +118,7 @@ LICENSE file.
         </plugin>
       </plugins>
     </pluginManagement>
-    
+
     <testResources>
       <testResource>
         <directory>../workloads</directory>

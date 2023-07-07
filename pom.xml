@@ -213,7 +213,7 @@ LICENSE file.
 
     <!-- all the datastore bindings, lex sorted please -->
     <module>accumulo1.9</module>
-    <!-- <module>accumulo1.10</module> -->
+    <module>accumulo1.10</module>
     <module>aerospike</module>
     <module>arangodb</module>
     <module>asynchbase</module>
