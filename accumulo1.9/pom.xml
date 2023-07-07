@@ -19,14 +19,17 @@ LICENSE file.
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>site.ycsb</groupId>
     <artifactId>binding-parent</artifactId>
     <version>0.18.0-SNAPSHOT</version>
     <relativePath>../binding-parent</relativePath>
   </parent>
+
   <artifactId>accumulo1.9-binding</artifactId>
   <name>Accumulo 1.9 DB Binding</name>
+
   <properties>
     <!-- This should match up to the one from your Accumulo version -->
     <hadoop.version>2.6.4</hadoop.version>
@@ -35,6 +38,7 @@ LICENSE file.
     <skipJDK10Tests>true</skipJDK10Tests>
     <skipJDK11Tests>true</skipJDK11Tests>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.accumulo</groupId>
@@ -79,7 +83,42 @@ LICENSE file.
       <version>2.0.6</version>
     </dependency>
   </dependencies>
+
   <build>
+    <pluginManagement>
+      <plugins>
+        <!-- TODO We wanted to override the parent and remove the release flag, but this did not work -->
+        <!--
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler-plugin.version}</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <testSource>${maven.compiler.testSource}</testSource>
+            <target>${maven.compiler.target}</target>
+            <testTarget>${maven.compiler.testTarget}</testTarget>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
+        </plugin>
+        -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven.checkstyle-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <!-- 9.3 is the last version built with Java 8, accummulo 1.9 build seems to need this -->
+              <version>9.3</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
     <testResources>
       <testResource>
         <directory>../workloads</directory>

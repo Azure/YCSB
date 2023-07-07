@@ -212,7 +212,7 @@ LICENSE file.
     <module>distribution</module>
 
     <!-- all the datastore bindings, lex sorted please -->
-    <!-- <module>accumulo1.9</module> -->
+    <module>accumulo1.9</module>
     <!-- <module>accumulo1.10</module> -->
     <module>aerospike</module>
     <module>arangodb</module>
@@ -308,7 +308,8 @@ LICENSE file.
             <testSource>${maven.compiler.testSource}</testSource>
             <target>${maven.compiler.target}</target>
             <testTarget>${maven.compiler.testTarget}</testTarget>
-            <release>${maven.compiler.target}</release>
+            <!-- TODO We were unable to override in a child module to say don't use the release flag -->
+            <!-- <release>${maven.compiler.target}</release> -->
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
           </configuration>
