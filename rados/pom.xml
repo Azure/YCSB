@@ -29,6 +29,10 @@ LICENSE file.
   <name>rados of Ceph FS binding</name>
   <packaging>jar</packaging>
 
+  <properties>
+    <json.version>20230618</json.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.ceph</groupId>
@@ -60,8 +64,4 @@ LICENSE file.
     </dependency>
   </dependencies>
 
-  <properties>
-  	<rados.version>0.6.0</rados.version>
-  	<json.version>20220924</json.version>
-  </properties>
 </project>
