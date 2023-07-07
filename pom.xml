@@ -109,7 +109,9 @@ LICENSE file.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- libs used by plugins versions -->
-    <checkstyle.version>10.12.1</checkstyle.version>
+    <!-- We are pinned to 9.3 if we want to run the build with Java 8 as checkstyle 10.0+ is Java 11+ -->
+    <checkstyle.version>9.3</checkstyle.version>
+    <!-- <checkstyle.version>10.12.1</checkstyle.version> -->
     <mutability.detector.version>0.9.1</mutability.detector.version>
     <spotbugs.version>4.7.3</spotbugs.version>
 
@@ -308,7 +310,7 @@ LICENSE file.
             <testSource>${maven.compiler.testSource}</testSource>
             <target>${maven.compiler.target}</target>
             <testTarget>${maven.compiler.testTarget}</testTarget>
-            <!-- TODO We were unable to override in a child module to say don't use the release flag -->
+            <!-- We cannot use the release flag if we use Java 8 to run our builds -->
             <!-- <release>${maven.compiler.target}</release> -->
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>

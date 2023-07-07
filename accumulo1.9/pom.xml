@@ -85,40 +85,6 @@ LICENSE file.
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <!-- TODO We wanted to override the parent and remove the release flag, but this did not work -->
-        <!--
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler-plugin.version}</version>
-          <configuration>
-            <source>${maven.compiler.source}</source>
-            <testSource>${maven.compiler.testSource}</testSource>
-            <target>${maven.compiler.target}</target>
-            <testTarget>${maven.compiler.testTarget}</testTarget>
-            <showDeprecation>true</showDeprecation>
-            <showWarnings>true</showWarnings>
-          </configuration>
-        </plugin>
-        -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${maven.checkstyle-plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <!-- 9.3 is the last version built with Java 8, accummulo 1.9 build seems to need this -->
-              <version>9.3</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <testResources>
       <testResource>
         <directory>../workloads</directory>
