@@ -186,9 +186,10 @@ LICENSE file.
     <mongodb.version>3.11.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
     <openjpa.jdbc.version>3.2.2</openjpa.jdbc.version>
-    <orientdb.version>3.2.16</orientdb.version>
+    <!-- Moving to <orientdb.version>3.2.16</orientdb.version> will require refactoring -->
+    <orientdb.version>2.2.37</orientdb.version>
     <rados.version>0.6.0</rados.version>
-    <!-- Above this version needs refactoring of the client -->
+    <!-- Above this version needs refactoring of the redis client -->
     <redis.version>2.9.0</redis.version>
     <riak.version>2.1.1</riak.version>
     <rocksdb.version>7.9.2</rocksdb.version>
@@ -198,6 +199,7 @@ LICENSE file.
     <seaweed.client.version>1.6.0</seaweed.client.version>
     <!-- Could add Solr 8 & 9 later -->
     <solr7.version>7.7.3</solr7.version>
+    <solr7.version>8.11.2</solr7.version>
     <tablestore.version>5.13.13</tablestore.version>
     <!-- update to 1.7.0+ needs refactoring -->
     <tarantool.version>1.6.9</tarantool.version>
@@ -236,13 +238,14 @@ LICENSE file.
     <module>griddb</module>
     <module>hbase1</module>
     <module>hbase2</module>
-    <!-- <module>ignite</module> -->
+    <module>ignite</module>
     <module>infinispan</module>
     <module>jdbc</module>
     <module>kudu</module>
     <module>maprdb</module>
     <module>maprjsondb</module>
     <module>memcached</module>
+    <!-- TODO Module needs refactoring to sue modern deps, old deps no longer accessible -->
     <!-- <module>mongodb</module> -->
     <module>nosqldb</module>
     <!-- <module>orientdb</module> -->
@@ -255,6 +258,7 @@ LICENSE file.
     <module>s3</module>
     <module>seaweedfs</module>
     <module>scylla</module>
+    <!-- A lib solr7 is dependent on, is no longer available -->
     <!-- <module>solr7</module> -->
     <module>tarantool</module>
     <module>tablestore</module>

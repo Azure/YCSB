@@ -26,3 +26,8 @@ output*
 
 # jenv config
 .java-version
+
+# Ignore Output from Ignite testing
+ignite/ignite-binding-*.log.gz
+ignite/ignite-binding.log
+ignite/ignite/

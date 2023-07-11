@@ -75,7 +75,9 @@ LICENSE file.
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.1.1</version>
+      <version>4.11.0</version>
+      <!-- Mockito dropped Java 8 support with 5.x -->
+      <!-- <version>5.1.1</version> -->
     </dependency>
 
   </dependencies>
