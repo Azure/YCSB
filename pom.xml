@@ -95,7 +95,7 @@ LICENSE file.
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -147,7 +147,7 @@ LICENSE file.
     <maven.project-info-reports-plugin.version>3.4.5</maven.project-info-reports-plugin.version>
     <maven.rat-plugin.version>0.15</maven.rat-plugin.version>
     <maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
-    <maven.site-plugin.version>4.0.0-M8</maven.site-plugin.version>
+    <maven.site-plugin.version>4.0.0-M9</maven.site-plugin.version>
     <maven.source-plugin.version>3.3.0</maven.source-plugin.version>
     <maven.spotbugs-plugin.version>4.7.3.5</maven.spotbugs-plugin.version>
     <maven.surefire-plugin.version>3.1.2</maven.surefire-plugin.version>
@@ -156,26 +156,29 @@ LICENSE file.
 
     <!-- datastore binding versions, lex sorted -->
     <accumulo.1.9.version>1.9.3</accumulo.1.9.version>
-    <accumulo.1.10.version>1.10.2</accumulo.1.10.version>
-    <aerospike.version>6.1.7</aerospike.version>
+    <accumulo.1.10.version>1.10.3</accumulo.1.10.version>
+    <!-- Add Accumulo 2.x adt some stage -->
+    <aerospike.version>6.1.11</aerospike.version>
     <arangodb.version>6.20.0</arangodb.version>
     <asynchbase.version>1.8.2</asynchbase.version>
-    <azurecosmos.version>4.41.0</azurecosmos.version>
+    <azurecosmos.version>4.47.0</azurecosmos.version>
     <azurestorage.version>8.6.6</azurestorage.version>
     <!-- Move to 4.0.x requires refactoring -->
     <cassandra.cql.version>3.0.0</cassandra.cql.version>
-    <cloudspanner.version>6.36.1</cloudspanner.version>
+    <cloudspanner.version>6.43.1</cloudspanner.version>
     <couchbase.version>1.4.13</couchbase.version>
+    <!-- Add couchbase 3 at some point -->
     <couchbase2.version>2.7.23</couchbase2.version>
     <!-- TODO 1.2-incubating - causes a strange permissions error when compiling -->
     <crail.version>1.1-incubating</crail.version>
     <elasticsearch2-version>2.4.6</elasticsearch2-version>
+    <!-- Go to elasticSearch 7 one day -->
     <elasticsearch5-version>5.6.16</elasticsearch5-version>
-    <foundationdb.version>7.2.3</foundationdb.version>
+    <foundationdb.version>7.3.6</foundationdb.version>
     <geode.version>1.15.1</geode.version>
     <!-- 2.7.1+ requires refactoring -->
     <googlebigtable.version>1.28.0</googlebigtable.version>
-    <griddb.version>5.1.0</griddb.version>
+    <griddb.version>5.3.0</griddb.version>
     <hbase1.version>1.7.2</hbase1.version>
     <hbase2.version>2.5.2</hbase2.version>
     <ignite.version>2.14.0</ignite.version>
@@ -186,21 +189,24 @@ LICENSE file.
     <mongodb.version>3.11.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
     <openjpa.jdbc.version>3.2.2</openjpa.jdbc.version>
-    <!-- Moving to <orientdb.version>3.2.16</orientdb.version> will require refactoring -->
+    <oraclenosql.version>18.3.10</oraclenosql.version>
+    <!-- Moving to <orientdb.version>3.2.16+</orientdb.version> will require refactoring -->
     <orientdb.version>2.2.37</orientdb.version>
+    <postgres.version>42.6.0</postgres.version>
     <rados.version>0.6.0</rados.version>
     <!-- Above this version needs refactoring of the redis client -->
     <redis.version>2.9.0</redis.version>
     <riak.version>2.1.1</riak.version>
-    <rocksdb.version>7.9.2</rocksdb.version>
-    <s3.version>1.12.412</s3.version>
-    <scylla.cql.version>3.11.2.4</scylla.cql.version>
+    <!-- Version 8.x+ needs refactoring -->
+    <rocksdb.version>7.10.2</rocksdb.version>
+    <s3.version>1.12.504</s3.version>
+    <scylla.cql.version>3.11.2.5</scylla.cql.version>
     <!-- needs further upgrades but difficult to track -->
     <seaweed.client.version>1.6.0</seaweed.client.version>
     <!-- Could add Solr 8 & 9 later -->
     <solr7.version>7.7.3</solr7.version>
     <solr7.version>8.11.2</solr7.version>
-    <tablestore.version>5.13.13</tablestore.version>
+    <tablestore.version>5.13.15</tablestore.version>
     <!-- update to 1.7.0+ needs refactoring -->
     <tarantool.version>1.6.9</tarantool.version>
     <thrift.version>0.8.0</thrift.version>
@@ -248,17 +254,18 @@ LICENSE file.
     <!-- TODO Module needs refactoring to sue modern deps, old deps no longer accessible -->
     <!-- <module>mongodb</module> -->
     <module>nosqldb</module>
-    <!-- <module>orientdb</module> -->
+    <module>orientdb</module>
     <module>postgrenosql</module>
     <module>rados</module>
     <module>redis</module>
-    <!-- <module>rest</module> -->
-    <!-- <module>riak</module> -->
+    <module>rest</module>
+    <module>riak</module>
     <module>rocksdb</module>
     <module>s3</module>
     <module>seaweedfs</module>
     <module>scylla</module>
-    <!-- A lib solr7 is dependent on, is no longer available -->
+    <!-- TODO a dependency for solr 11 only lives in maven-restlet repo at https://maven.restlet.talend.com -->
+    <!-- MSFT does not have that repo in Azure DevOps -->
     <!-- <module>solr7</module> -->
     <module>tarantool</module>
     <module>tablestore</module>

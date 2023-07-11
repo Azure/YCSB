@@ -27,13 +27,13 @@
     <skipJDK10Tests>true</skipJDK10Tests>
     <skipJDK11Tests>true</skipJDK11Tests>
 
-    <!-- Upgrading beyond this will require refactoring -->
-    <tomcat.version>9.0.71</tomcat.version>
-    <!-- Upgrading beyond this will require refactoring -->
-    <jersey.version>2.38</jersey.version>
+    <!-- Upgrading beyond this (9.x+) will require refactoring -->
+    <tomcat.version>8.5.90</tomcat.version>
+    <!-- Upgrading beyond this (2.26+) will require refactoring -->
+    <jersey.version>2.25</jersey.version>
     <httpclient.version>4.5.14</httpclient.version>
     <httpcore.version>4.4.16</httpcore.version>
-    <!-- MOve to JUnit 5 one day -->
+    <!-- Move to JUnit 5 one day -->
     <junit.version>4.13.2</junit.version>
     <system-rules.version>1.19.0</system-rules.version>
   </properties>
