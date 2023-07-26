@@ -269,7 +269,10 @@ public class AzureCosmosClient extends DB {
       builder.openConnectionsAndInitCaches(proactiveContainerInitConfig);
 
       // setup e2e timeout
-      builder.endToEndOperationLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build());
+      builder
+          .endToEndOperationLatencyPolicyConfig(
+              new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+          .build());
 
       AzureCosmosClient.client = builder.buildClient();
       LOGGER.info("Azure Cosmos DB connection created to {}", uri);
