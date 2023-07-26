@@ -20,12 +20,16 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -256,6 +260,14 @@ public class AzureCosmosClient extends DB {
         builder.preferredRegions(preferredRegionList);
       }
 
+      // add openConnectionAndInitCaches call
+      CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+          new CosmosContainerProactiveInitConfigBuilder(
+              Arrays.asList(new CosmosContainerIdentity("ycsb", "usertable")))
+          .setProactiveConnectionRegionsCount(1)
+          .build();
+
+      builder.openConnectionsAndInitCaches(proactiveContainerInitConfig);
       AzureCosmosClient.client = builder.buildClient();
       LOGGER.info("Azure Cosmos DB connection created to {}", uri);
     } catch (IllegalArgumentException e) {
@@ -364,7 +376,11 @@ public class AzureCosmosClient extends DB {
         AzureCosmosClient.containerCache.put(table, container);
       }
 
-      CosmosItemResponse<ObjectNode> response = container.readItem(key, new PartitionKey(key), ObjectNode.class);
+      CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+      cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+          new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build());
+
+      CosmosItemResponse<ObjectNode> response = container.readItem(key, new PartitionKey(key), cosmosItemRequestOptions, ObjectNode.class);
       ObjectNode node = response.getItem();
       Map<String, String> stringResults = new HashMap<>(node.size());
       if (fields == null) {
