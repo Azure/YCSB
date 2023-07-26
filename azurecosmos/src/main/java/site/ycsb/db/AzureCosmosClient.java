@@ -266,8 +266,11 @@ public class AzureCosmosClient extends DB {
               Arrays.asList(new CosmosContainerIdentity("ycsb", "usertable")))
           .setProactiveConnectionRegionsCount(1)
           .build();
-
       builder.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+
+      // setup e2e timeout
+      builder.endToEndOperationLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build());
+
       AzureCosmosClient.client = builder.buildClient();
       LOGGER.info("Azure Cosmos DB connection created to {}", uri);
     } catch (IllegalArgumentException e) {
@@ -376,11 +379,7 @@ public class AzureCosmosClient extends DB {
         AzureCosmosClient.containerCache.put(table, container);
       }
 
-      CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-      cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
-          new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build());
-
-      CosmosItemResponse<ObjectNode> response = container.readItem(key, new PartitionKey(key), cosmosItemRequestOptions, ObjectNode.class);
+      CosmosItemResponse<ObjectNode> response = container.readItem(key, new PartitionKey(key), ObjectNode.class);
       ObjectNode node = response.getItem();
       Map<String, String> stringResults = new HashMap<>(node.size());
       if (fields == null) {
