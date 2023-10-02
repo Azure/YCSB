@@ -20,12 +20,18 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -255,6 +261,20 @@ public class AzureCosmosClient extends DB {
       if (preferredRegionList != null && preferredRegionList.size() > 0) {
         builder.preferredRegions(preferredRegionList);
       }
+
+      CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+           new CosmosContainerProactiveInitConfigBuilder(
+               Arrays.asList(new CosmosContainerIdentity("ycsb", "usertable")))
+               .setProactiveConnectionRegionsCount(1)
+               .build();
+
+      CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+          new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+          .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+          .build();
+
+      builder.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+      builder.endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
       AzureCosmosClient.client = builder.buildClient();
       LOGGER.info("Azure Cosmos DB connection created to {}", uri);
