@@ -105,6 +105,19 @@ LICENSE file.
     </dependencies>
   </dependencyManagement>
 
+  <repositories>
+    <repository>
+      <id>azure-sdk-for-java</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <!-- Properties Management -->
   <properties>
     <maven.assembly.version>2.5.5</maven.assembly.version>
@@ -115,7 +128,7 @@ LICENSE file.
     <aerospike.version>3.1.2</aerospike.version>
     <arangodb.version>4.4.1</arangodb.version>
     <asynchbase.version>1.8.2</asynchbase.version>
-    <azurecosmos.version>4.41.0</azurecosmos.version>
+    <azurecosmos.version>4.53.0-alpha.20231201.5</azurecosmos.version>
     <azurestorage.version>4.0.0</azurestorage.version>
     <cassandra.cql.version>3.0.0</cassandra.cql.version>
     <cloudspanner.version>2.0.1</cloudspanner.version>

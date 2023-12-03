@@ -155,6 +155,8 @@ public class AzureCosmosClient extends DB {
 
   private void initAzureCosmosClient() throws DBException {
 
+    System.setProperty("COSMOS.IS_TLSv1_3_ENABLED", "true");
+
     // Connection properties
     String primaryKey = this.getStringProperty("azurecosmos.primaryKey", null);
     if (primaryKey == null || primaryKey.isEmpty()) {
