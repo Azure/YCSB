@@ -18,6 +18,11 @@
  */
 package site.ycsb.db.seaweed;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import seaweedfs.client.FilerProto;
 import seaweedfs.client.FilerClient;
 import seaweedfs.client.FilerGrpcClient;
@@ -32,6 +37,7 @@ import site.ycsb.StringByteIterator;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.HashMap;
@@ -40,11 +46,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -208,7 +209,10 @@ public class SeaweedClient extends DB {
                               .setFileMode(0755)
               );
 
-      SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
+      // SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
+      SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0,
+          jsonData.length, this.folder + "/" + tableName);
+      // SeaweedWrite.writeData(entry, "000", this.filerGrpcClient, 0, jsonData, 0, jsonData.length);
 
       SeaweedWrite.writeMeta(this.filerGrpcClient, this.folder + "/" + tableName, entry);
 
@@ -250,7 +254,7 @@ public class SeaweedClient extends DB {
         SeaweedRead.nonOverlappingVisibleIntervals(filerGrpcClient, entry.getChunksList());
     int length = (int) SeaweedRead.totalSize(entry.getChunksList());
     byte[] buffer = new byte[length];
-    SeaweedRead.read(this.filerGrpcClient, visibleIntervalList, 0, buffer, 0, buffer.length);
+    SeaweedRead.read(this.filerGrpcClient, visibleIntervalList, 0, ByteBuffer.wrap(buffer), 0);
     fromJson(new String(buffer, StandardCharsets.UTF_8), fields, result);
   }
 
@@ -288,7 +292,7 @@ public class SeaweedClient extends DB {
           Map<String, ByteIterator> result) throws IOException {
     JsonNode json = MAPPER.readTree(value);
     boolean checkFields = fields != null && !fields.isEmpty();
-    for (Iterator<Map.Entry<String, JsonNode>> jsonFields = json.getFields();
+    for (Iterator<Map.Entry<String, JsonNode>> jsonFields = json.fields();
          jsonFields.hasNext();
       /* increment in loop body */) {
       Map.Entry<String, JsonNode> jsonField = jsonFields.next();

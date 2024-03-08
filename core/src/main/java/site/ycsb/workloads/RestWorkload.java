@@ -208,8 +208,7 @@ public class RestWorkload extends CoreWorkload {
   /**
    * Reads the trace file and returns a URL map.
    */
-  private static Map<Integer, String> getTrace(String filePath, int recordCount)
-    throws WorkloadException {
+  private static Map<Integer, String> getTrace(String filePath, int recordCount) throws WorkloadException {
     Map<Integer, String> urlMap = new HashMap<Integer, String>();
     int count = 0;
     String line;

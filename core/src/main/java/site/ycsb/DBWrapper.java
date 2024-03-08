@@ -86,7 +86,7 @@ public class DBWrapper extends DB {
    * Called once per DB instance; there is one DB instance per client thread.
    */
   public void init() throws DBException {
-    try (final TraceScope span = tracer.newScope(scopeStringInit)) {
+    try (TraceScope span = tracer.newScope(scopeStringInit)) {
       db.init();
 
       this.reportLatencyForEachError = Boolean.parseBoolean(getProperties().
@@ -114,7 +114,7 @@ public class DBWrapper extends DB {
    * Called once per DB instance; there is one DB instance per client thread.
    */
   public void cleanup() throws DBException {
-    try (final TraceScope span = tracer.newScope(scopeStringCleanup)) {
+    try (TraceScope span = tracer.newScope(scopeStringCleanup)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       db.cleanup();
@@ -135,7 +135,7 @@ public class DBWrapper extends DB {
    */
   public Status read(String table, String key, Set<String> fields,
                      Map<String, ByteIterator> result) {
-    try (final TraceScope span = tracer.newScope(scopeStringRead)) {
+    try (TraceScope span = tracer.newScope(scopeStringRead)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       Status res = db.read(table, key, fields, result);
@@ -159,7 +159,7 @@ public class DBWrapper extends DB {
    */
   public Status scan(String table, String startkey, int recordcount,
                      Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
-    try (final TraceScope span = tracer.newScope(scopeStringScan)) {
+    try (TraceScope span = tracer.newScope(scopeStringScan)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       Status res = db.scan(table, startkey, recordcount, fields, result);
@@ -198,7 +198,7 @@ public class DBWrapper extends DB {
    */
   public Status update(String table, String key,
                        Map<String, ByteIterator> values) {
-    try (final TraceScope span = tracer.newScope(scopeStringUpdate)) {
+    try (TraceScope span = tracer.newScope(scopeStringUpdate)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       Status res = db.update(table, key, values);
@@ -221,7 +221,7 @@ public class DBWrapper extends DB {
    */
   public Status insert(String table, String key,
                        Map<String, ByteIterator> values) {
-    try (final TraceScope span = tracer.newScope(scopeStringInsert)) {
+    try (TraceScope span = tracer.newScope(scopeStringInsert)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       Status res = db.insert(table, key, values);
@@ -240,7 +240,7 @@ public class DBWrapper extends DB {
    * @return The result of the operation.
    */
   public Status delete(String table, String key) {
-    try (final TraceScope span = tracer.newScope(scopeStringDelete)) {
+    try (TraceScope span = tracer.newScope(scopeStringDelete)) {
       long ist = measurements.getIntendedStartTimeNs();
       long st = System.nanoTime();
       Status res = db.delete(table, key);

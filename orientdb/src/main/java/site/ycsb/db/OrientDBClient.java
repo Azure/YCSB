@@ -40,7 +40,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * OrientDB client for YCSB framework.
+ * OrientDB client for YCSB framework.  Much of this is making Deprecated calls so it needs refactoring.
  */
 public class OrientDBClient extends DB {
   private static final String URL_PROPERTY         = "orientdb.url";

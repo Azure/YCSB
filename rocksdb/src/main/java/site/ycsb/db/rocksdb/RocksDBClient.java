@@ -239,7 +239,7 @@ public class RocksDBClient extends DB {
       }
 
       final ColumnFamilyHandle cf = COLUMN_FAMILIES.get(table).getHandle();
-      try(final RocksIterator iterator = rocksDb.newIterator(cf)) {
+      try(RocksIterator iterator = rocksDb.newIterator(cf)) {
         int iterations = 0;
         for (iterator.seek(startkey.getBytes(UTF_8)); iterator.isValid() && iterations < recordcount;
              iterator.next()) {
@@ -324,7 +324,7 @@ public class RocksDBClient extends DB {
 
   private void saveColumnFamilyNames() throws IOException {
     final Path file = rocksDbDir.resolve(COLUMN_FAMILY_NAMES_FILENAME);
-    try(final PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file, UTF_8))) {
+    try(PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file, UTF_8))) {
       writer.println(new String(RocksDB.DEFAULT_COLUMN_FAMILY, UTF_8));
       for(final String cfName : COLUMN_FAMILIES.keySet()) {
         writer.println(cfName);
@@ -336,7 +336,7 @@ public class RocksDBClient extends DB {
     final List<String> cfNames = new ArrayList<>();
     final Path file = rocksDbDir.resolve(COLUMN_FAMILY_NAMES_FILENAME);
     if(Files.exists(file)) {
-      try (final LineNumberReader reader =
+      try (LineNumberReader reader =
                new LineNumberReader(Files.newBufferedReader(file, UTF_8))) {
         String line = null;
         while ((line = reader.readLine()) != null) {
@@ -379,7 +379,7 @@ public class RocksDBClient extends DB {
   }
 
   private byte[] serializeValues(final Map<String, ByteIterator> values) throws IOException {
-    try(final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+    try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       final ByteBuffer buf = ByteBuffer.allocate(4);
 
       for(final Map.Entry<String, ByteIterator> value : values.entrySet()) {

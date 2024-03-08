@@ -23,7 +23,7 @@ As more and more databases are created to handle distributed or "cloud" workload
 
 YCSB is located in a Git repository hosted on GitHub at [https://github.com/brianfrankcooper/YCSB](https://github.com/brianfrankcooper/YCSB). To modify the code, fork the main repo into your own GitHub account or organization and commit changes there.
 
-YCSB is written in Java (as most of the new cloud data stores at beginning of the project were written in Java) and is laid out as a multi-module Maven project. You should be able to import the project into your favorite IDE or environment easily. For more details about the Maven layout see the [Guide to Working with Multiple Modules](https://maven.apache.org/guides/mini/guide-multiple-modules.html).
+YCSB is written in Java (as most of the new cloud data stores at beginning of the project were written in Java) and is laid out as a multimodule Maven project. You should be able to import the project into your favorite IDE or environment easily. For more details about the Maven layout see the [Guide to Working with Multiple Modules](https://maven.apache.org/guides/mini/guide-multiple-modules.html).
 
 ## Licensing
 
@@ -37,7 +37,7 @@ YCSB is licensed under the Apache License, Version 2.0 (APL2). Every file includ
  * may not use this file except in compliance with the License. You
  * may obtain a copy of the License at
  * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,11 +56,29 @@ Client bindings to non-APL databases are perfectly acceptable, as data stores ar
 
 ## Issues and Support
 
-To track bugs, feature requests and releases we use GitHub's integrated [Issues](https://github.com/brianfrankcooper/YCSB/issues). If you find a bug or problem, open an issue with a descriptive title and as many details as you can give us in the body (stack traces, log files, etc). Then if you can create a fix, follow the PR guidelines below.
+To track bugs, feature requests and releases we use GitHub's integrated [Issues](https://github.com/brianfrankcooper/YCSB/issues). If you find a bug or problem, open an issue with a descriptive title and as many details as you can give us in the body (stack traces, log files, etc.). Then if you can create a fix, follow the PR guidelines below.
 
 **Note** Before embarking on a code change or DB, search through the existing issues and pull requests to see if anyone is already working on it. Reach out to them if so.
 
 For general support, please use the mailing list hosted (of course) with Yahoo groups at [http://groups.yahoo.com/group/ycsb-users](http://groups.yahoo.com/group/ycsb-users).
+
+## Minimal Java Version
+
+YCSB is designed to be built and run with Java 8.
+
+## Building
+
+**WARN** please check that the Maven Wrapper has correctly picked up Java 8.
+
+```shell
+./mvnw --version
+```
+
+The following Maven Wrapper command will build the entire repo and run the tests.
+
+```shell
+./mvnw clean install
+```
 
 ## Code Style
 
@@ -72,13 +90,13 @@ A Java coding style guide is enforced via the Maven CheckStyle plugin. We try no
 * Upper camel case classes and method names.
 * Line length.
 
-CheckStyle will run for pull requests or if you create a package locally so if you just compile and push a commit, you may be surprised when the build fails with a style issue. Just execute ``mvn checkstyle:checkstyle `` before you open a PR and you should avoid any suprises.
+CheckStyle will run for pull requests or if you create a package locally so if you just compile and push a commit, you may be surprised when the build fails with a style issue. Just execute ``mvn checkstyle:checkstyle `` before you open a PR and you should avoid any surprises.
 
 ## Platforms
 
-Since most data bases aim to support multiple platforms, YCSB aims to run on as many as possible as well. Besides **Linux** and **macOS**, YCSB must compile and run for **Windows**. While not all DBs will run under every platform, the YCSB tool itself must be able to execute on all of these systems and hopefully be able to communicate with remote data stores.
+Since most databases aim to support multiple platforms, YCSB aims to run on as many as possible as well. Besides **Linux** and **macOS**, YCSB must compile and run for **Windows**. While not all DBs will run under every platform, the YCSB tool itself must be able to execute on all of these systems and hopefully be able to communicate with remote data stores.
 
-Additionally, YCSB is targeting Java 7 (1.7.0) as its build version as some users are glacially slow moving to Java 8. So please avoid those Lambdas and Streams for now.
+Additionally, YCSB is targeting Java 8 (1.8.0) as its build version.
 
 ## Pull Requests
 
@@ -116,17 +134,17 @@ When a new database is released a *binding* can be created that implements a cli
 * The module *must* include a README.md file with details such as:
   * Database setup with links to documentation so that the YCSB benchmarks will execute properly.
   * Example command line executions (workload selection, etc).
-  * Required and optional properties (e.g. connection strings, behavior settings, etc) along with the default values.
+  * Required and optional properties (e.g. connection strings, behavior settings, etc.) along with the default values.
   * Versions of the database the binding supports.
-* Javadoc the binding and all of the methods. Tell us what it does and how it works.
+* Javadoc the binding and all the methods. Tell us what it does and how it works.
 
 Because YCSB is a utility to compare multiple data stores, we need each binding to behave similarly by default. That means each data store should enforce the strictest consistency guarantees available and avoid client side buffering or optimizations. This allows users to evaluate different DBs with a common baseline and tough standards.
 
-However you *should* include parameters to tune and improve performance as much as possible to reach those flashy marketing numbers. Just be honest and document what the settings do and what trade-offs are made. (e.g. client side buffering reduces I/O but a crash can lead to data loss).
+However, you *should* include parameters to tune and improve performance as much as possible to reach those flashy marketing numbers. Just be honest and document what the settings do and what trade-offs are made. (e.g. client side buffering reduces I/O but a crash can lead to data loss).
 
 ### Workloads
 
-YCSB began comparing various key/value data stores with simple CRUD operations. However as DBs have become more specialized we've added more workloads for various tasks and would love to have more in the future. Keep the following in mind:
+YCSB began comparing various key/value data stores with simple CRUD operations. However, as DBs have become more specialized we've added more workloads for various tasks and would love to have more in the future. Keep the following in mind:
 
 * Make sure more than one publicly available database can handle your workload. It's no fun if only one player is in the game.
 * Use the existing DB interface to pass your data around. If you really need another API, discuss with the maintainers to see if there isn't a workaround.

@@ -108,4 +108,3 @@ Run the workload test:
 - `accumulo.password`
   - The password for the user connecting to Accumulo.
   - No default value.
-

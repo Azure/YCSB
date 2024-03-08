@@ -85,8 +85,10 @@ public class SolrClient extends DB {
     if (cloudMode) {
       System.err.println("Solr Zookeeper Remote Hosts = "
           + props.getProperty("solr.zookeeper.hosts", DEFAULT_ZOOKEEPER_HOSTS));
-      client = new CloudSolrClient.Builder().withZkHost(
-        Arrays.asList(props.getProperty("solr.zookeeper.hosts", DEFAULT_ZOOKEEPER_HOSTS).split(","))).build();
+
+      client = new CloudSolrClient.Builder(Arrays.asList(props.getProperty("solr.zookeeper.hosts",
+          DEFAULT_ZOOKEEPER_HOSTS).split(","))).build();
+
     } else {
       client = new HttpSolrClient.Builder(props.getProperty("solr.base.url", DEFAULT_SOLR_BASE_URL)).build();
     }

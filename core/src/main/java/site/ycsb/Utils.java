@@ -220,7 +220,7 @@ public final class Utils {
    * @param array The array to randomly shuffle.
    * @return The shuffled array.
    */
-  public static <T> T [] shuffleArray(final T[] array) {
+  public static <T> T[] shuffleArray(final T[] array) {
     for (int i = array.length -1; i > 0; i--) {
       final int idx = ThreadLocalRandom.current().nextInt(i + 1);
       final T temp = array[idx];

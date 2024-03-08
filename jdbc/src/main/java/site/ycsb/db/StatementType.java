@@ -26,7 +26,7 @@ public class StatementType {
 
     private final int internalType;
 
-    private Type(int type) {
+    Type(int type) {
       internalType = type;
     }
 

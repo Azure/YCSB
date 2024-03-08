@@ -659,7 +659,11 @@ public class TimeSeriesWorkload extends Workload {
       }
       groupBys = new boolean[gbKeys.length];
       for (int i = 0; i < gbKeys.length; i++) {
-        groupBys[i] = Integer.parseInt(gbKeys[i].trim()) == 0 ? false : true;
+        if (Integer.parseInt(gbKeys[i].trim()) != 0) {
+          groupBys[i] = true;
+        } else {
+          groupBys[i] = false;
+        }
       }
       groupBy = true;
     }
@@ -861,8 +865,7 @@ public class TimeSeriesWorkload extends Workload {
     // rando tags
     for (int i = 0; i < tagPairs; ++i) {
       if (groupBy && groupBys[i]) {
-        buf.append(deleteDelimiter)
-           .append(tagKeys[i]);
+        buf.append(deleteDelimiter).append(tagKeys[i]);
       } else {
         buf.append(deleteDelimiter).append(tagKeys[i] + tagPairDelimiter + 
             tagValues[random.nextInt(tagCardinality[i])]);
@@ -877,10 +880,9 @@ public class TimeSeriesWorkload extends Workload {
         endTimestamp = startTimestamp + queryTimeSpan;
       }
       buf.append(deleteDelimiter)
-         .append(timestampKey + tagPairDelimiter + startTimestamp + queryTimeSpanDelimiter + endTimestamp);
+          .append(timestampKey + tagPairDelimiter + startTimestamp + queryTimeSpanDelimiter + endTimestamp);
     } else {
-      buf.append(deleteDelimiter)
-         .append(timestampKey + tagPairDelimiter + startTimestamp);  
+      buf.append(deleteDelimiter).append(timestampKey + tagPairDelimiter + startTimestamp);
     }
     
     db.delete(table, buf.toString());

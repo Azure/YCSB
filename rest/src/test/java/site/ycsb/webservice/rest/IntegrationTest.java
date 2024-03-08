@@ -78,7 +78,7 @@ public class IntegrationTest {
     tomcat.setPort(Integer.valueOf(port));
     Context context = tomcat.addWebapp("/webService", new File(webappDirLocation).getAbsolutePath());
     Tomcat.addServlet(context, "jersey-container-servlet", resourceConfig());
-    context.addServletMapping("/rest/*", "jersey-container-servlet");
+    context.addServletMappingDecoded("/rest/*", "jersey-container-servlet");
     tomcat.start();
     // Allow time for proper startup.
     Thread.sleep(1000);

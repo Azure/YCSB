@@ -20,12 +20,12 @@ package site.ycsb.db.tablestore;
 import java.util.*;
 import java.util.function.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import site.ycsb.*;
 
 import com.alicloud.openservices.tablestore.*;
 import com.alicloud.openservices.tablestore.model.*;
-
-import org.apache.log4j.Logger;
 
 /**
  * TableStore Client for YCSB.
@@ -38,7 +38,7 @@ public class TableStoreClient extends DB {
   private int maxVersions = 1;
   private String primaryKeyName;
 
-  private static final Logger LOGGER = Logger.getLogger(TableStoreClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TableStoreClient.class);
 
   // nasty here as currently there is no support of JEP218
   private void setIntegerProperty(
@@ -126,7 +126,7 @@ public class TableStoreClient extends DB {
     if (e.getErrorCode().contains("OTSRowOperationConflict")) {
       return Status.ERROR;
     }
-    LOGGER.error(e);
+    LOGGER.error(e.getMessage());
     return Status.ERROR;
   }
 
@@ -155,7 +155,7 @@ public class TableStoreClient extends DB {
     } catch (TableStoreException e) {
       return dealWithTableStoreException(e);
     } catch (Exception e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage());
       return Status.ERROR;
     }
   }
@@ -196,7 +196,7 @@ public class TableStoreClient extends DB {
     } catch (TableStoreException e) {
       return dealWithTableStoreException(e);
     } catch (Exception e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage());
       return Status.ERROR;
     }
   }
@@ -221,7 +221,7 @@ public class TableStoreClient extends DB {
     } catch (TableStoreException e) {
       return dealWithTableStoreException(e);
     } catch (Exception e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage());
       return Status.ERROR;
     }
   }
@@ -247,7 +247,7 @@ public class TableStoreClient extends DB {
     } catch (TableStoreException e) {
       return dealWithTableStoreException(e);
     } catch (Exception e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage());
       return Status.ERROR;
     }
   }
@@ -268,7 +268,7 @@ public class TableStoreClient extends DB {
     } catch (TableStoreException e) {
       return dealWithTableStoreException(e);
     } catch (Exception e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage());
       return Status.ERROR;
     }
   }
