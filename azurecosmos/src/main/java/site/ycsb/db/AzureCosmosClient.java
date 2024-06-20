@@ -37,6 +37,8 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -86,6 +88,8 @@ public class AzureCosmosClient extends DB {
   private static final int DEFAULT_DIAGNOSTICS_LATENCY_THRESHOLD_IN_MS = -1;
   private static final boolean DEFAULT_INCLUDE_EXCEPTION_STACK_IN_LOG = false;
   private static final String DEFAULT_USER_AGENT = "azurecosmos-ycsb";
+  private static final String AAD_AUTH_METHOD = "AAD";
+  private static final String MASTER_KEY_AUTH_METHOD = "MASTER_KEY";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosClient.class);
   private static final Marker CREATE_DIAGNOSTIC = MarkerFactory.getMarker("CREATE_DIAGNOSTIC");
@@ -152,10 +156,11 @@ public class AzureCosmosClient extends DB {
 
   private void initAzureCosmosClient() throws DBException {
 
-    // Connection properties
+    // Connection properties. Requires at least the primary key OR the user assigned identity id.
     String primaryKey = this.getStringProperty("azurecosmos.primaryKey", null);
-    if (primaryKey == null || primaryKey.isEmpty()) {
-      throw new DBException("Missing primary key required to connect to the database.");
+    String userAssignedIdentityClientId = this.getStringProperty("azurecosmos.userAssignedIdentityClientId", null);
+    if ( (primaryKey == null || primaryKey.isEmpty()) && (userAssignedIdentityClientId == null || userAssignedIdentityClientId.isEmpty()) ) {
+      throw new DBException("Missing primary key or user assigned identity id required to connect to the database.");
     }
 
     String uri = this.getStringProperty("azurecosmos.uri", null);
@@ -247,19 +252,22 @@ public class AzureCosmosClient extends DB {
           retryOptions.getMaxRetryWaitTime().toMillis() / 1000, AzureCosmosClient.useUpsert,
           AzureCosmosClient.maxDegreeOfParallelism, AzureCosmosClient.maxBufferedItemCount,
           AzureCosmosClient.preferredPageSize);
-
-      CosmosClientBuilder builder = new CosmosClientBuilder()
-          .endpoint(uri)
-          .key(primaryKey)
-          .throttlingRetryOptions(retryOptions)
-          .consistencyLevel(consistencyLevel)
-          .userAgentSuffix(userAgent)
-          .clientTelemetryConfig(new CosmosClientTelemetryConfig()
-              .diagnosticsThresholds(
-                  new CosmosDiagnosticsThresholds()
-                      .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                      .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
-                      .setRequestChargeThreshold(requestChargeThreshold)));
+      
+      String authMethod = "";
+      String token = "";
+      if (primaryKey != null && !primaryKey.isEmpty()) 
+      {
+        authMethod = AAD_AUTH_METHOD;
+        token = primaryKey;
+      }
+      else if (userAssignedIdentityClientId != null && !userAssignedIdentityClientId.isEmpty())
+      {
+        authMethod = MASTER_KEY_AUTH_METHOD;
+        token = userAssignedIdentityClientId;
+      }
+      
+      // Initialize the CosmosClientBuilder based on the authentication method. 
+      CosmosClientBuilder builder = getCosmosClientBuilder(authMethod, uri, token);
 
       if (useGateway) {
         builder = builder.gatewayMode(gatewayConnectionConfig);
@@ -297,6 +305,47 @@ public class AzureCosmosClient extends DB {
     String appInsightConnectionString = this.getStringProperty("azurecosmos.appInsightConnectionString", null);
     if (appInsightConnectionString != null) {
       registerMeter();
+    }
+  }
+
+  // Initialize the CosmosClientBuilder based on the authentication method.
+  private static CosmosClientBuilder getCosmosClientBuilder(String authMethod, String uri, String token) {
+    if (authMethod.equals(AAD_AUTH_METHOD))
+    {
+      // Gets token from MSI UA
+      ManagedIdentityCredentialBuilder credentialBuilder = new ManagedIdentityCredentialBuilder();
+      credentialBuilder.clientId(token);
+
+      return new CosmosClientBuilder()
+          .endpoint(uri)
+          .credential(credentialBuilder.build())
+          .throttlingRetryOptions(retryOptions)
+          .consistencyLevel(consistencyLevel)
+          .userAgentSuffix(userAgent)
+          .clientTelemetryConfig(new CosmosClientTelemetryConfig()
+              .diagnosticsThresholds(
+                  new CosmosDiagnosticsThresholds()
+                      .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                      .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                      .setRequestChargeThreshold(requestChargeThreshold)));
+    }
+    else if (authMethod.equals(MASTER_KEY_AUTH_METHOD))
+    {
+      return new CosmosClientBuilder()
+          .endpoint(uri)
+          .key(token)
+          .throttlingRetryOptions(retryOptions)
+          .consistencyLevel(consistencyLevel)
+          .userAgentSuffix(userAgent)
+          .clientTelemetryConfig(new CosmosClientTelemetryConfig()
+              .diagnosticsThresholds(
+                  new CosmosDiagnosticsThresholds()
+                      .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                      .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                      .setRequestChargeThreshold(requestChargeThreshold)));
+    }
+    else {
+      throw new DBException("Invalid authentication method. Supported methods are AAD and MASTER_KEY.");
     }
   }
 
