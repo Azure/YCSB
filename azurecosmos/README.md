@@ -33,12 +33,14 @@ get. You can override the default database name with the
 azurecosmos.databaseName configuration value for side-by-side
 benchmarking.
 
-You must set the uri and the primaryKey in the azurecosmos.properties file in the commands below.
+You must set the uri and the primaryKey or userAssignedIdentityClientId in the azurecosmos.properties file in the commands below.
     $YCSB_HOME/bin/ycsb load azurecosmos -P workloads/workloada -P azurecosmos/conf/azurecosmos.properties
     $YCSB_HOME/bin/ycsb run azurecosmos -P workloads/workloada -P azurecosmos/conf/azurecosmos.properties
 
-Optionally you can set the uri and primaryKey as follows:
+Optionally you can set the uri and primaryKey OR userAssignedIdentityClientId as follows:
     $YCSB_HOME/bin/ycsb load azurecosmos -P workloads/workloada -p azurecosmos.primaryKey=<key from the portal> -p azurecosmos.uri=<uri from the portal>
+Or
+    $YCSB_HOME/bin/ycsb load azurecosmos -P workloads/workloada -p azurecosmos.userAssignedIdentityClientId=<UA id from the portal> -p azurecosmos.uri=<uri from the portal>
 
 ### 2. Cosmos DB Configuration Parameters
 
@@ -52,6 +54,12 @@ Optionally you can set the uri and primaryKey as follows:
 	  primary key is used to allow both read & write operations.  If you are
 	  doing read only workloads you can substitute the readonly key from the
 	  portal.
+
+OR
+
+- azurecosmos.userAssignedIdentityClientId < key string > :
+    - Obtained from the UA resource in the portal, named as Client ID.
+
 
 #### Options parameters
 
