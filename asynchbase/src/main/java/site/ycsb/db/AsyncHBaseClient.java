@@ -120,7 +120,7 @@ public class AsyncHBaseClient extends site.ycsb.DB {
     
     final boolean prefetchMeta = getProperties()
         .getProperty(PREFETCH_META_PROPERTY, "false")
-        .toLowerCase().equals("true") ? true : false;
+        .toLowerCase().equals("true");
     try {
       synchronized (MUTEX) {
         ++threadCount;

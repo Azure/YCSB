@@ -357,8 +357,7 @@ public class BasicDB extends DB {
     StringBuilder buf = getStringBuilder().append(table).append(key);
     for (final Entry<String, ByteIterator> entry : sorted.entrySet()) {
       entry.getValue().reset();
-      buf.append(entry.getKey())
-         .append(entry.getValue().toString());
+      buf.append(entry.getKey()).append(entry.getValue().toString());
     }
     return buf.toString().hashCode();
   }

@@ -317,7 +317,7 @@ public class RestClient extends DB {
     private long timeout;
     private Criteria timedout;
 
-    public Timer(long timeout, Criteria timedout) {
+    Timer(long timeout, Criteria timedout) {
       this.timedout = timedout;
       this.timeout = timeout;
     }
@@ -341,7 +341,7 @@ public class RestClient extends DB {
 
     private boolean isSatisfied;
 
-    public Criteria(boolean isSatisfied) {
+    Criteria(boolean isSatisfied) {
       this.isSatisfied = isSatisfied;
     }
 
@@ -362,7 +362,7 @@ public class RestClient extends DB {
 
     private static final long serialVersionUID = 1L;
     
-    public TimeoutException() {
+    TimeoutException() {
       super("HTTP Request exceeded execution time limit.");
     }
 

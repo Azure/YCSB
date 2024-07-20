@@ -10,7 +10,7 @@ output*
 .settings
 .checkstyle
 
-# ignore standard IntelliJ files
+# ignore standard IntelliJ IDE files
 .idea/
 *.iml
 *.ipr
@@ -23,3 +23,11 @@ output*
 # ignore standard Mac OS X files/dirs
 .DS_Store
 /differentbin/
+
+# jenv config
+.java-version
+
+# Ignore Output from Ignite testing
+ignite/ignite-binding-*.log.gz
+ignite/ignite-binding.log
+ignite/ignite/

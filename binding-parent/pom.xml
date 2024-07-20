@@ -50,7 +50,7 @@ LICENSE file.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>${maven.assembly.version}</version>
+          <version>${maven.assembly-plugin.version}</version>
           <dependencies>
             <dependency>
               <groupId>site.ycsb</groupId>
@@ -93,7 +93,7 @@ LICENSE file.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven.dependency.version}</version>
+          <version>${maven.dependency-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

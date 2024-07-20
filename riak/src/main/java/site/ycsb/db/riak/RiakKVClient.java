@@ -19,6 +19,7 @@
 package site.ycsb.db.riak;
 
 import com.basho.riak.client.api.commands.buckets.StoreBucketProperties;
+import com.basho.riak.client.api.commands.indexes.SecondaryIndexQuery;
 import com.basho.riak.client.api.commands.kv.StoreValue;
 import com.basho.riak.client.api.commands.kv.UpdateValue;
 import com.basho.riak.client.core.RiakFuture;
@@ -297,7 +298,7 @@ public class RiakKVClient extends DB {
 
     try {
       IntIndexQuery.Response response = future.get(transactionTimeLimit, TimeUnit.SECONDS);
-      List<IntIndexQuery.Response.Entry> entries = response.getEntries();
+      List<SecondaryIndexQuery.Response.Entry<Long>> entries = response.getEntries();
 
       // If no entries were retrieved, then something bad happened...
       if (entries.size() == 0) {

@@ -128,18 +128,18 @@ public class FoundationDBClient extends DB {
   private void batchInsert() {
     try {
       db.run(tr -> {
-          for (int i = 0; i < batchCount; ++i) {
-            Tuple t = new Tuple();
-            for (Map.Entry<String, String> entry : StringByteIterator.getStringMap(batchValues.get(i)).entrySet()) {
-              Tuple v = new Tuple();
-              v = v.add(entry.getKey());
-              v = v.add(entry.getValue());
-              t = t.add(v);
-            }
-            tr.set(Tuple.from(batchKeys.get(i)).pack(), t.pack());
+        for (int i = 0; i < batchCount; ++i) {
+          Tuple t = new Tuple();
+          for (Map.Entry<String, String> entry : StringByteIterator.getStringMap(batchValues.get(i)).entrySet()) {
+            Tuple v = new Tuple();
+            v = v.add(entry.getKey());
+            v = v.add(entry.getValue());
+            t = t.add(v);
           }
-          return null;
-        });
+          tr.set(Tuple.from(batchKeys.get(i)).pack(), t.pack());
+        }
+        return null;
+      });
     } catch (FDBException e) {
       for (int i = 0; i < batchCount; ++i) {
         logger.error(MessageFormatter.format("Error batch inserting key {}", batchKeys.get(i)).getMessage(), e);
@@ -182,9 +182,9 @@ public class FoundationDBClient extends DB {
     logger.debug("delete key = {}", rowKey);
     try {
       db.run(tr -> {
-          tr.clear(Tuple.from(rowKey).pack());
-          return null;
-        });
+        tr.clear(Tuple.from(rowKey).pack());
+        return null;
+      });
       return Status.OK;
     } catch (FDBException e) {
       logger.error(MessageFormatter.format("Error deleting key: {}", rowKey).getMessage(), e);
@@ -202,9 +202,9 @@ public class FoundationDBClient extends DB {
     logger.debug("read key = {}", rowKey);
     try {
       byte[] row = db.run(tr -> {
-          byte[] r = tr.get(Tuple.from(rowKey).pack()).join();
-          return r;
-        });
+        byte[] r = tr.get(Tuple.from(rowKey).pack()).join();
+        return r;
+      });
       Tuple t = Tuple.fromBytes(row);
       if (t.size() == 0) {
         logger.debug("key not fount: {}", rowKey);
@@ -227,34 +227,34 @@ public class FoundationDBClient extends DB {
     logger.debug("update key = {}", rowKey);
     try {
       Status s = db.run(tr -> {
-          byte[] row = tr.get(Tuple.from(rowKey).pack()).join();
-          Tuple o = Tuple.fromBytes(row);
-          if (o.size() == 0) {
-            logger.debug("key not fount: {}", rowKey);
+        byte[] row = tr.get(Tuple.from(rowKey).pack()).join();
+        Tuple o = Tuple.fromBytes(row);
+        if (o.size() == 0) {
+          logger.debug("key not fount: {}", rowKey);
+          return Status.NOT_FOUND;
+        }
+        HashMap<String, ByteIterator> result = new HashMap<>();
+        if (convTupleToMap(o, null, result) != Status.OK) {
+          return Status.ERROR;
+        }
+        for (String k : values.keySet()) {
+          if (result.containsKey(k)) {
+            result.put(k, values.get(k));
+          } else {
+            logger.debug("field not fount: {}", k);
             return Status.NOT_FOUND;
           }
-          HashMap<String, ByteIterator> result = new HashMap<>();
-          if (convTupleToMap(o, null, result) != Status.OK) {
-            return Status.ERROR;
-          }
-          for (String k : values.keySet()) {
-            if (result.containsKey(k)) {
-              result.put(k, values.get(k));
-            } else {
-              logger.debug("field not fount: {}", k);
-              return Status.NOT_FOUND;
-            }
-          }
-          Tuple t = new Tuple();
-          for (Map.Entry<String, String> entry : StringByteIterator.getStringMap(result).entrySet()) {
-            Tuple v = new Tuple();
-            v = v.add(entry.getKey());
-            v = v.add(entry.getValue());
-            t = t.add(v);
-          }
-          tr.set(Tuple.from(rowKey).pack(), t.pack());
-          return Status.OK;
-        });
+        }
+        Tuple t = new Tuple();
+        for (Map.Entry<String, String> entry : StringByteIterator.getStringMap(result).entrySet()) {
+          Tuple v = new Tuple();
+          v = v.add(entry.getKey());
+          v = v.add(entry.getValue());
+          t = t.add(v);
+        }
+        tr.set(Tuple.from(rowKey).pack(), t.pack());
+        return Status.OK;
+      });
       return s;
     } catch (FDBException e) {
       logger.error(MessageFormatter.format("Error updating key: {}", rowKey).getMessage(), e);

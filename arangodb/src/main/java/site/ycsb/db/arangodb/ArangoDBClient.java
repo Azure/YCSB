@@ -26,13 +26,10 @@ import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.arangodb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.arangodb.ArangoCursor;
-import com.arangodb.ArangoDB;
-import com.arangodb.ArangoDBException;
-import com.arangodb.Protocol;
 import com.arangodb.entity.BaseDocument;
 import com.arangodb.model.DocumentCreateOptions;
 import com.arangodb.model.TransactionOptions;
@@ -111,7 +108,7 @@ public class ArangoDBClient extends DB {
       
       // Init ArangoDB connection
       try {
-        arangoDB = new ArangoDB.Builder().host(ip).port(port).useProtocol(protocol).build();
+        arangoDB = new ArangoDB.Builder().host(ip, port).useProtocol(protocol).build();
       } catch (Exception e) {
         logger.error("Failed to initialize ArangoDB", e);
         System.exit(-1);
@@ -122,19 +119,19 @@ public class ArangoDBClient extends DB {
         if (dropDBBeforeRun) {
           // Try delete first
           try {
-            arangoDB.db(databaseName).drop();
+            arangoDB.db(DbName.of(databaseName)).drop();
           } catch (ArangoDBException e) {
             logger.info("Fail to delete DB: {}", databaseName);
           }
         }
         try {
-          arangoDB.createDatabase(databaseName);
+          arangoDB.createDatabase(DbName.of(databaseName));
           logger.info("Database created: " + databaseName);
         } catch (ArangoDBException e) {
           logger.error("Failed to create database: {} with ex: {}", databaseName, e.toString());
         }
         try {
-          arangoDB.db(databaseName).createCollection(collectionName);
+          arangoDB.db(DbName.of(databaseName)).createCollection(collectionName);
           logger.info("Collection created: " + collectionName);
         } catch (ArangoDBException e) {
           logger.error("Failed to create collection: {} with ex: {}", collectionName, e.toString());
@@ -187,7 +184,7 @@ public class ArangoDBClient extends DB {
         toInsert.addAttribute(entry.getKey(), byteIteratorToString(entry.getValue()));
       }
       DocumentCreateOptions options = new DocumentCreateOptions().waitForSync(waitForSync);
-      arangoDB.db(databaseName).collection(table).insertDocument(toInsert, options);
+      arangoDB.db(DbName.of(databaseName)).collection(table).insertDocument(toInsert, options);
       return Status.OK;
     } catch (ArangoDBException e) {
       logger.error("Exception while trying insert {} {} with ex {}", table, key, e.toString());
@@ -212,7 +209,8 @@ public class ArangoDBClient extends DB {
   @Override
   public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result) {
     try {
-      VPackSlice document = arangoDB.db(databaseName).collection(table).getDocument(key, VPackSlice.class, null);
+      VPackSlice document = arangoDB.db(DbName.of(databaseName)).collection(table)
+          .getDocument(key, VPackSlice.class, null);
       if (!this.fillMap(result, document, fields)) {
         return Status.ERROR;
       }
@@ -245,7 +243,7 @@ public class ArangoDBClient extends DB {
         for (Entry<String, ByteIterator> field : values.entrySet()) {
           updateDoc.addAttribute(field.getKey(), byteIteratorToString(field.getValue()));
         }
-        arangoDB.db(databaseName).collection(table).updateDocument(key, updateDoc);
+        arangoDB.db(DbName.of(databaseName)).collection(table).updateDocument(key, updateDoc);
         return Status.OK;
       } else {
         // id for documentHandle
@@ -258,7 +256,7 @@ public class ArangoDBClient extends DB {
         TransactionOptions options = new TransactionOptions();
         options.writeCollections(table);
         options.params(createDocumentHandle(table, key));
-        arangoDB.db(databaseName).transaction(transactionAction, Void.class, options);
+        arangoDB.db(DbName.of(databaseName)).transaction(transactionAction, Void.class, options);
         return Status.OK;
       }
     } catch (ArangoDBException e) {
@@ -280,7 +278,7 @@ public class ArangoDBClient extends DB {
   @Override
   public Status delete(String table, String key) {
     try {
-      arangoDB.db(databaseName).collection(table).deleteDocument(key);
+      arangoDB.db(DbName.of(databaseName)).collection(table).deleteDocument(key);
       return Status.OK;
     } catch (ArangoDBException e) {
       logger.error("Exception while trying delete {} {} with ex {}", table, key, e.toString());
@@ -316,7 +314,7 @@ public class ArangoDBClient extends DB {
           recordcount, constructReturnForAQL(fields, "target"));
 
       Map<String, Object> bindVars = new MapBuilder().put("key", startkey).get();
-      cursor = arangoDB.db(databaseName).query(aqlQuery, bindVars, null, VPackSlice.class);
+      cursor = arangoDB.db(DbName.of(databaseName)).query(aqlQuery, bindVars, null, VPackSlice.class);
       while (cursor.hasNext()) {
         VPackSlice aDocument = cursor.next();
         HashMap<String, ByteIterator> aMap = new HashMap<String, ByteIterator>(aDocument.size());

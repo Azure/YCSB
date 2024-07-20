@@ -46,6 +46,11 @@ LICENSE file.
     </dependency>
     <dependency>
       <groupId>site.ycsb</groupId>
+      <artifactId>accumulo1.10-binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>site.ycsb</groupId>
       <artifactId>aerospike-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -78,7 +83,7 @@ LICENSE file.
       <groupId>site.ycsb</groupId>
       <artifactId>couchbase2-binding</artifactId>
       <version>${project.version}</version>
-		</dependency>
+    </dependency>
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>crail-binding</artifactId>
@@ -179,11 +184,13 @@ LICENSE file.
       <artifactId>maprjsondb-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>mongodb-binding</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency
+    -->
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>mongodbreactivestreams-binding</artifactId>
@@ -244,11 +251,14 @@ LICENSE file.
       <artifactId>scylla-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- Azure is not able to build this module, see root pom.xml for details -->
+    <!--
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>solr7-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>site.ycsb</groupId>
       <artifactId>tarantool-binding</artifactId>
@@ -271,12 +281,13 @@ LICENSE file.
     </dependency>
 
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>${maven.assembly.version}</version>
+        <version>${maven.assembly-plugin.version}</version>
         <configuration>
           <descriptors>
             <descriptor>src/main/assembly/distribution.xml</descriptor>
