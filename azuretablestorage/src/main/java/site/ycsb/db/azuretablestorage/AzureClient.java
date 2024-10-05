@@ -33,7 +33,6 @@ import site.ycsb.DB;
 import site.ycsb.DBException;
 import site.ycsb.Status;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -194,19 +193,17 @@ public class AzureClient extends DB {
     TableQuery<TableServiceEntity> projectionQuery = TableQuery.from(
         TableServiceEntity.class).where(whereStr).select(fields.toArray(new String[0]));
 
-    EntityResolver<HashMap<String, ByteIterator>> resolver = 
-        new EntityResolver<HashMap<String, ByteIterator>>() {
-          public HashMap<String, ByteIterator> resolve(String partitionkey, String rowKey, 
-              Date timeStamp, HashMap<String, EntityProperty> properties, String etag) {
-            HashMap<String, ByteIterator> tmp = new HashMap<String, ByteIterator>();
-            for (Entry<String, EntityProperty> entry : properties.entrySet()) {
-              String key = entry.getKey();
-              ByteIterator val = new ByteArrayByteIterator(entry.getValue().getValueAsByteArray());
-              tmp.put(key, val);
-            }
-            return tmp;
-      }
-    };
+    EntityResolver<HashMap<String, ByteIterator>> resolver =
+        (partitionkey, rowKey, timeStamp, properties, etag) -> {
+          HashMap<String, ByteIterator> tmp = new HashMap<>();
+          for (Entry<String, EntityProperty> entry : properties.entrySet()) {
+            String key1 = entry.getKey();
+            ByteIterator val = new ByteArrayByteIterator(entry.getValue().getValueAsByteArray());
+            tmp.put(key1, val);
+          }
+          return tmp;
+        };
+
     try {
       for (HashMap<String, ByteIterator> tmp : cloudTable.execute(projectionQuery, resolver)) {
         for (Entry<String, ByteIterator> entry : tmp.entrySet()){

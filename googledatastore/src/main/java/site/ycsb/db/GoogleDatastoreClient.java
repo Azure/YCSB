@@ -18,6 +18,7 @@
 package site.ycsb.db;
 
 import com.google.api.client.auth.oauth2.Credential;
+// Deprecated lib, use https://github.com/googleapis/google-auth-library-java as a replacement later
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.datastore.v1.*;
 import com.google.datastore.v1.CommitRequest.Mode;
@@ -28,14 +29,15 @@ import com.google.datastore.v1.client.DatastoreFactory;
 import com.google.datastore.v1.client.DatastoreHelper;
 import com.google.datastore.v1.client.DatastoreOptions;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import site.ycsb.ByteIterator;
 import site.ycsb.DB;
 import site.ycsb.DBException;
 import site.ycsb.Status;
 import site.ycsb.StringByteIterator;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -69,8 +71,7 @@ public class GoogleDatastoreClient extends DB {
     MULTI_ENTITY_PER_GROUP
   }
 
-  private static Logger logger =
-      Logger.getLogger(GoogleDatastoreClient.class);
+  private static final Logger LOGGER = LogManager.getLogger(GoogleDatastoreClient.class);
 
   // Read consistency defaults to "STRONG" per YCSB guidance.
   // User can override this via configure.
@@ -93,7 +94,7 @@ public class GoogleDatastoreClient extends DB {
   public void init() throws DBException {
     String debug = getProperties().getProperty("googledatastore.debug", null);
     if (null != debug && "true".equalsIgnoreCase(debug)) {
-      logger.setLevel(Level.DEBUG);
+      LOGGER.atLevel(Level.DEBUG);
     }
 
     String skipIndexString = getProperties().getProperty(
@@ -161,12 +162,12 @@ public class GoogleDatastoreClient extends DB {
       if (serviceAccountEmail != null && privateKeyFile != null) {
         credential = DatastoreHelper.getServiceAccountCredential(
             serviceAccountEmail, privateKeyFile);
-        logger.info("Using JWT Service Account credential.");
-        logger.info("DatasetID: " + datasetId + ", Service Account Email: " +
+        LOGGER.info("Using JWT Service Account credential.");
+        LOGGER.info("DatasetID: " + datasetId + ", Service Account Email: " +
             serviceAccountEmail + ", Private Key File Path: " + privateKeyFile);
       } else {
-        logger.info("Using default gcloud credential.");
-        logger.info("DatasetID: " + datasetId
+        LOGGER.info("Using default gcloud credential.");
+        LOGGER.info("DatasetID: " + datasetId
             + ", Service Account Email: " + ((GoogleCredential) credential).getServiceAccountId());
       }
 
@@ -182,7 +183,7 @@ public class GoogleDatastoreClient extends DB {
           exception.getMessage(), exception);
     }
 
-    logger.info("Datastore client instance created: " +
+    LOGGER.info("Datastore client instance created: " +
         datastore.toString());
   }
 
@@ -196,14 +197,14 @@ public class GoogleDatastoreClient extends DB {
     // Note above, datastore lookupRequest always reads the entire entity, it
     // does not support reading a subset of "fields" (properties) of an entity.
 
-    logger.debug("Built lookup request as: " + lookupRequest.toString());
+    LOGGER.debug("Built lookup request as: " + lookupRequest.toString());
 
     LookupResponse response = null;
     try {
       response = datastore.lookup(lookupRequest.build());
 
     } catch (DatastoreException exception) {
-      logger.error(
+      LOGGER.error(
           String.format("Datastore Exception when reading (%s): %s %s",
               exception.getMessage(),
               exception.getMethodName(),
@@ -223,9 +224,9 @@ public class GoogleDatastoreClient extends DB {
     }
 
     Entity entity = response.getFound(0).getEntity();
-    logger.debug("Read entity: " + entity.toString());
+    LOGGER.debug("Read entity: " + entity.toString());
 
-    Map<String, Value> properties = entity.getProperties();
+    Map<String, Value> properties = entity.getPropertiesMap();
     Set<String> propertiesToReturn =
         (fields == null ? properties.keySet() : fields);
 
@@ -309,7 +310,7 @@ public class GoogleDatastoreClient extends DB {
                 .setExcludeFromIndexes(skipIndex).build());
       }
       Entity entity = entityBuilder.build();
-      logger.debug("entity built as: " + entity.toString());
+      LOGGER.debug("entity built as: " + entity.toString());
 
       if (mutationType == MutationType.UPSERT) {
         commitRequest.addMutationsBuilder().setUpsert(entity);
@@ -322,12 +323,12 @@ public class GoogleDatastoreClient extends DB {
 
     try {
       datastore.commit(commitRequest.build());
-      logger.debug("successfully committed.");
+      LOGGER.debug("successfully committed.");
 
     } catch (DatastoreException exception) {
       // Catch all Datastore rpc errors.
       // Log the exception, the name of the method called and the error code.
-      logger.error(
+      LOGGER.error(
           String.format("Datastore Exception when committing (%s): %s %s",
               exception.getMessage(),
               exception.getMethodName(),

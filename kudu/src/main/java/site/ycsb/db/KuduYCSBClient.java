@@ -153,7 +153,6 @@ public class KuduYCSBClient extends site.ycsb.DB {
       int numClients = getIntFromProp(prop, NUM_CLIENTS_OPT, DEFAULT_NUM_CLIENTS);
       for (int i = 0; i < numClients; i++) {
         clients.add(new KuduClient.KuduClientBuilder(masterAddresses)
-                                  .defaultSocketReadTimeoutMs(DEFAULT_SLEEP)
                                   .defaultOperationTimeoutMs(DEFAULT_SLEEP)
                                   .defaultAdminOperationTimeoutMs(DEFAULT_SLEEP)
                                   .build());

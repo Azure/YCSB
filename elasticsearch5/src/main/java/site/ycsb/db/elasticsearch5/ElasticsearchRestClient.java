@@ -17,6 +17,7 @@
 
 package site.ycsb.db.elasticsearch5;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import site.ycsb.ByteIterator;
 import site.ycsb.DB;
 import site.ycsb.DBException;
@@ -30,7 +31,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.nio.entity.NStringEntity;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;

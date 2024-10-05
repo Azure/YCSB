@@ -16,9 +16,10 @@
  */
 package site.ycsb.measurements.exporter;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.util.DefaultPrettyPrinter;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class JSONMeasurementsExporter implements MeasurementsExporter {
   public JSONMeasurementsExporter(OutputStream os) throws IOException {
 
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
-    g = factory.createJsonGenerator(bw);
+    g = factory.createGenerator(bw);
     g.setPrettyPrinter(new DefaultPrettyPrinter());
   }
 

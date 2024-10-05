@@ -329,7 +329,7 @@ public final class Client {
     long en;
     int opsDone;
 
-    try (final TraceScope span = tracer.newScope(CLIENT_WORKLOAD_SPAN)) {
+    try (TraceScope span = tracer.newScope(CLIENT_WORKLOAD_SPAN)) {
 
       final Map<Thread, ClientThread> threads = new HashMap<>(threadcount);
       for (ClientThread client : clients) {
@@ -362,7 +362,7 @@ public final class Client {
     }
 
     try {
-      try (final TraceScope span = tracer.newScope(CLIENT_CLEANUP_SPAN)) {
+      try (TraceScope span = tracer.newScope(CLIENT_CLEANUP_SPAN)) {
 
         if (terminator != null && !terminator.isInterrupted()) {
           terminator.interrupt();
@@ -388,7 +388,7 @@ public final class Client {
     }
 
     try {
-      try (final TraceScope span = tracer.newScope(CLIENT_EXPORT_MEASUREMENTS_SPAN)) {
+      try (TraceScope span = tracer.newScope(CLIENT_EXPORT_MEASUREMENTS_SPAN)) {
         exportMeasurements(props, opsDone, en - st);
       }
     } catch (IOException e) {
@@ -407,7 +407,7 @@ public final class Client {
     boolean dotransactions = Boolean.valueOf(props.getProperty(DO_TRANSACTIONS_PROPERTY, String.valueOf(true)));
 
     final List<ClientThread> clients = new ArrayList<>(threadcount);
-    try (final TraceScope span = tracer.newScope(CLIENT_INIT_SPAN)) {
+    try (TraceScope span = tracer.newScope(CLIENT_INIT_SPAN)) {
       long opcount;
       if (dotransactions) {
         opcount = Long.parseLong(props.getProperty(OPERATION_COUNT_PROPERTY, "0"));
@@ -462,7 +462,7 @@ public final class Client {
 
   private static void initWorkload(Properties props, Thread warningthread, Workload workload, Tracer tracer) {
     try {
-      try (final TraceScope span = tracer.newScope(CLIENT_WORKLOAD_INIT_SPAN)) {
+      try (TraceScope span = tracer.newScope(CLIENT_WORKLOAD_INIT_SPAN)) {
         workload.init(props);
         warningthread.interrupt();
       }

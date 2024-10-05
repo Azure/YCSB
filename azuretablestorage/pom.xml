@@ -38,9 +38,9 @@ LICENSE file.
             <scope>provided</scope>
         </dependency>
         <dependency>
-    		<groupId>com.microsoft.azure</groupId>
-    		<artifactId>azure-storage</artifactId>
-    		<version>${azurestorage.version}</version>
-		</dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-storage</artifactId>
+          <version>${azurestorage.version}</version>
+        </dependency>
     </dependencies>
 </project>

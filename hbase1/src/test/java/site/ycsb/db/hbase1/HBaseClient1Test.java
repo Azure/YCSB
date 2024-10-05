@@ -78,7 +78,7 @@ public class HBaseClient1Test {
     // Minicluster setup fails on Windows with an UnsatisfiedLinkError.
     // Skip if windows.
     assumeTrue(!isWindows());
-    testingUtil = HBaseTestingUtility.createLocalHTU();
+    testingUtil = new HBaseTestingUtility();
     testingUtil.startMiniCluster();
   }
 

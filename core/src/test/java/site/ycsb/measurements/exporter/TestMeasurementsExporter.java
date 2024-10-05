@@ -16,12 +16,12 @@
  */
 package site.ycsb.measurements.exporter;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import site.ycsb.generator.ZipfianGenerator;
 import site.ycsb.measurements.Measurements;
 import site.ycsb.measurements.OneMeasurementHistogram;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -52,7 +52,7 @@ public class TestMeasurementsExporter {
         export.close();
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode  json = mapper.readTree(out.toString("UTF-8"));
+        JsonNode json = mapper.readTree(out.toString("UTF-8"));
         assertTrue(json.isArray());
         assertEquals(json.get(0).get("measurement").asText(), "Operations");
         assertEquals(json.get(4).get("measurement").asText(), "MaxLatency(us)");
