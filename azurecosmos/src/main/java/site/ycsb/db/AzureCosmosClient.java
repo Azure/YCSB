@@ -53,6 +53,7 @@ import site.ycsb.DB;
 import site.ycsb.DBException;
 import site.ycsb.Status;
 import site.ycsb.StringByteIterator;
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -243,8 +244,12 @@ public class AzureCosmosClient extends DB {
           AzureCosmosClient.maxDegreeOfParallelism, AzureCosmosClient.maxBufferedItemCount,
           AzureCosmosClient.preferredPageSize);
 
-      CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(uri).key(primaryKey)
-          .throttlingRetryOptions(retryOptions).consistencyLevel(consistencyLevel).userAgentSuffix(userAgent);
+      CosmosClientBuilder builder = new CosmosClientBuilder()
+          .endpoint(uri)
+          .credential(new InteractiveBrowserCredentialBuilder().build())
+          .throttlingRetryOptions(retryOptions)
+          .consistencyLevel(consistencyLevel)
+          .userAgentSuffix(userAgent);
 
       if (useGateway) {
         builder = builder.gatewayMode(gatewayConnectionConfig);
