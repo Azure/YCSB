@@ -286,10 +286,8 @@ public class AzureCosmosClient extends DB {
       CosmosClientBuilder builder = new CosmosClientBuilder()
           .endpoint(uri)
           .credential(new MyTokenCredential(managedIdentityClientId))
-          .throttlingRetryOptions(retryOptions)
           .consistencyLevel(consistencyLevel)
-          .gatewayMode()
-          .userAgentSuffix(userAgent);
+          .gatewayMode();
 
       if (useGateway) {
         builder = builder.gatewayMode(gatewayConnectionConfig);
