@@ -16,6 +16,9 @@
 
 package site.ycsb.db;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -48,6 +51,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import reactor.core.publisher.Mono;
 import site.ycsb.ByteIterator;
 import site.ycsb.DB;
 import site.ycsb.DBException;
@@ -80,7 +84,7 @@ public class AzureCosmosClient extends DB {
   // Default configuration values
   private static final ConsistencyLevel DEFAULT_CONSISTENCY_LEVEL = ConsistencyLevel.SESSION;
   private static final String DEFAULT_DATABASE_NAME = "ycsb";
-  private static final boolean DEFAULT_USE_GATEWAY = false;
+  private static final boolean DEFAULT_USE_GATEWAY = true;
   private static final boolean DEFAULT_USE_UPSERT = false;
   private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = -1;
   private static final int DEFAULT_MAX_BUFFERED_ITEM_COUNT = 0;
@@ -138,6 +142,37 @@ public class AzureCosmosClient extends DB {
   private static Counter updateFailureCounter;
   private static Timer updateSuccessLatencyTimer;
 
+  /**
+   * TokenCredential implementation for Azure Cosmos DB.
+   * This implementation uses InteractiveBrowserCredentialBuilder to authenticate
+   * with Azure AD.
+   */
+  public static class MyTokenCredential implements TokenCredential {
+    private final TokenCredential credential;
+
+    public MyTokenCredential() {
+      this.credential = new InteractiveBrowserCredentialBuilder()
+          .authorityHost("https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47")
+          .build();
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
+      TokenRequestContext cosmosTokenRequest = new TokenRequestContext();
+      cosmosTokenRequest.addScopes("https://cosmos.azure.com/.default");
+
+      return credential.getToken(cosmosTokenRequest).block();
+    }
+
+    @Override
+    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+      TokenRequestContext cosmosTokenRequest = new TokenRequestContext();
+      cosmosTokenRequest.addScopes("https://cosmos.azure.com/.default");
+
+      return credential.getToken(cosmosTokenRequest);
+    }
+  }
+
   @Override
   public void init() throws DBException {
     INIT_COUNT.incrementAndGet();
@@ -159,7 +194,7 @@ public class AzureCosmosClient extends DB {
     // Connection properties
     String primaryKey = this.getStringProperty("azurecosmos.primaryKey", null);
     if (primaryKey == null || primaryKey.isEmpty()) {
-      throw new DBException("Missing primary key required to connect to the database.");
+//      throw new DBException("Missing primary key required to connect to the database.");
     }
 
     String uri = this.getStringProperty("azurecosmos.uri", null);
@@ -246,9 +281,9 @@ public class AzureCosmosClient extends DB {
 
       CosmosClientBuilder builder = new CosmosClientBuilder()
           .endpoint(uri)
-          .credential(new InteractiveBrowserCredentialBuilder().build())
-          .throttlingRetryOptions(retryOptions)
+          .credential(new MyTokenCredential())
           .consistencyLevel(consistencyLevel)
+          .gatewayMode()
           .userAgentSuffix(userAgent);
 
       if (useGateway) {
