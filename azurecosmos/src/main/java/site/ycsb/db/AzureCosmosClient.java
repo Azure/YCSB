@@ -81,7 +81,7 @@ public class AzureCosmosClient extends DB {
   // Default configuration values
   private static final ConsistencyLevel DEFAULT_CONSISTENCY_LEVEL = ConsistencyLevel.SESSION;
   private static final String DEFAULT_DATABASE_NAME = "ycsb10";
-  private static final boolean DEFAULT_USE_GATEWAY = true;
+  private static final boolean DEFAULT_USE_GATEWAY = false;
   private static final boolean DEFAULT_USE_UPSERT = false;
   private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = -1;
   private static final int DEFAULT_MAX_BUFFERED_ITEM_COUNT = 0;
@@ -189,8 +189,8 @@ public class AzureCosmosClient extends DB {
     // Connection properties
     String primaryKey = this.getStringProperty("azurecosmos.primaryKey", null);
     String managedIdentityClientId = this.getStringProperty("azurecosmos.managedIdentityClientId", null);
-    if (isNullOrEmpty(primaryKey) && isNullOrEmpty(managedIdentityClientId)) {
-      throw new DBException("Missing primaryKey and managedIdentityClientId required to connect to the database.");
+    if (isNullOrEmpty(managedIdentityClientId)) {
+      throw new DBException("Missing managedIdentityClientId required to connect to the database.");
     }
 
     String uri = this.getStringProperty("azurecosmos.uri", null);
@@ -287,7 +287,8 @@ public class AzureCosmosClient extends DB {
           .endpoint(uri)
           .credential(new MyTokenCredential(managedIdentityClientId))
           .consistencyLevel(consistencyLevel)
-          .gatewayMode();
+          .gatewayMode()
+          .throttlingRetryOptions(retryOptions);
 
       if (useGateway) {
         builder = builder.gatewayMode(gatewayConnectionConfig);
