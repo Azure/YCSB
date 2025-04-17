@@ -80,7 +80,6 @@ public class AzureCosmosClient extends DB {
 
   // Default configuration values
   private static final ConsistencyLevel DEFAULT_CONSISTENCY_LEVEL = ConsistencyLevel.SESSION;
-  private static final String DEFAULT_DATABASE_NAME = "ycsb1";
   private static final boolean DEFAULT_USE_GATEWAY = true;
   private static final boolean DEFAULT_USE_UPSERT = false;
   private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = -1;
@@ -197,12 +196,13 @@ public class AzureCosmosClient extends DB {
     if (isNullOrEmpty(uri)) {
       throw new DBException("Missing uri required to connect to the database.");
     }
+    String ycsbDatabaseName = this.getStringProperty("azurecosmos.ycsbDatabaseName", null);
 
     AzureCosmosClient.userAgent = this.getStringProperty("azurecosmos.userAgent", DEFAULT_USER_AGENT);
 
     AzureCosmosClient.useUpsert = this.getBooleanProperty("azurecosmos.useUpsert", DEFAULT_USE_UPSERT);
 
-    AzureCosmosClient.databaseName = this.getStringProperty("azurecosmos.databaseName", DEFAULT_DATABASE_NAME);
+    AzureCosmosClient.databaseName = this.getStringProperty("azurecosmos.databaseName", ycsbDatabaseName);
 
     AzureCosmosClient.maxDegreeOfParallelism = this.getIntProperty("azurecosmos.maxDegreeOfParallelism",
         DEFAULT_MAX_DEGREE_OF_PARALLELISM);
