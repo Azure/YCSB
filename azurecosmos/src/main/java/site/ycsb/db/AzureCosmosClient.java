@@ -166,6 +166,8 @@ public class AzureCosmosClient extends DB {
       throw new DBException("Missing uri required to connect to the database.");
     }
 
+    boolean useProxy = this.getBooleanProperty("azurecosmos.useProxy", true);
+
     AzureCosmosClient.userAgent = this.getStringProperty("azurecosmos.userAgent", DEFAULT_USER_AGENT);
 
     AzureCosmosClient.useUpsert = this.getBooleanProperty("azurecosmos.useUpsert", DEFAULT_USE_UPSERT);
@@ -250,6 +252,10 @@ public class AzureCosmosClient extends DB {
         builder = builder.gatewayMode(gatewayConnectionConfig);
       } else {
         builder = builder.directMode(directConnectionConfig);
+      }
+
+      if (useProxy) {
+        builder = builder.endpoint("https://localhost:5100").endpointDiscoveryEnabled(false);
       }
 
       if (preferredRegionList != null && preferredRegionList.size() > 0) {
