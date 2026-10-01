@@ -163,7 +163,7 @@ LICENSE file.
     <module>aerospike</module>
     <module>arangodb</module>
     <module>asynchbase</module>
-    <module>azure</module>
+    <module>azurecosmos</module>
     <module>azuretablestorage</module>
     <module>cassandra</module>
     <module>cloudspanner</module>
